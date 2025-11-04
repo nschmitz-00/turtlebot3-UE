@@ -50,11 +50,11 @@ protected:
     // UPROPERTY(EditAnywhere, BlueprintReadWrite)
     // UStaticMeshComponent* BaseRing = nullptr;
     
-    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    // UStaticMeshComponent* LidarSensor = nullptr;
-    //
-    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    // URR2DLidarComponent* LidarComponent = nullptr;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* LidarSensor = nullptr;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URR2DLidarComponent* LidarComponent = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UStaticMeshComponent* WheelLeft = nullptr;
@@ -68,8 +68,8 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UPhysicsConstraintComponent* Base_WheelRight = nullptr;
 
-    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    // UPhysicsConstraintComponent* Base_LidarSensor = nullptr;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* Base_LidarSensor = nullptr;
 
     // UPROPERTY(EditAnywhere, BlueprintReadWrite)
     // UPhysicsConstraintComponent* Base_BaseRing = nullptr;

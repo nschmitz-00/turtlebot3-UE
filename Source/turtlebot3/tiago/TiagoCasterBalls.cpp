@@ -9,12 +9,12 @@ ATiagoCasterBalls::ATiagoCasterBalls(const FObjectInitializer& ObjectInitializer
     ROS2InterfaceClass = URRTiagoROS2Interface::StaticClass();
     PrimaryActorTick.bCanEverTick = true;
     bBodyComponentsCreated = false;
-    // UE_LOG_WITH_INFO_SHORT(
-    //     LogTiago,
-    //     Warning,
-    //     TEXT("%d, %d"),
-    //     Base_LidarSensor == nullptr,
-    //     !Base_LidarSensor->IsAttachedTo(LidarSensor));
+    UE_LOG_WITH_INFO_SHORT(
+        LogTiago,
+        Warning,
+        TEXT("%d, %d"),
+        Base_LidarSensor == nullptr,
+        !Base_LidarSensor->IsAttachedTo(LidarSensor));
     VehicleMoveComponentClass = UDifferentialDriveComponent::StaticClass();
     SetupBody();
     SetupConstraintsAndPhysics();
@@ -38,9 +38,9 @@ bool ATiagoCasterBalls::SetupBody()
     // BaseRing = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseRing"));
     
     // Lidar
-    // LidarSensor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LidarSensor"));
-    // LidarComponent = CreateDefaultSubobject<URR2DLidarComponent>(TEXT("LidarComp"));
-    // LidarComponent->SetupAttachment(LidarSensor);
+    LidarSensor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LidarSensor"));
+    LidarComponent = CreateDefaultSubobject<URR2DLidarComponent>(TEXT("LidarComp"));
+    LidarComponent->SetupAttachment(LidarSensor);
     
     // Wheels (Drive)
     WheelLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WheelLeft"));
@@ -54,7 +54,7 @@ bool ATiagoCasterBalls::SetupBody()
     
     // ================== Base Constraints ==================
     
-    // Base_LidarSensor = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_LidarSensor"));
+    Base_LidarSensor = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_LidarSensor"));
     // Base_BaseRing = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_BaseRing"));
     Base_WheelLeft = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_WheelLeft"));
     Base_WheelRight = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_WheelRight"));
@@ -98,7 +98,7 @@ bool ATiagoCasterBalls::SetupConstraintsAndPhysics()
         // BaseRing->SetSimulatePhysics(true);
         // BaseRing->SetCollisionEnabled(ECollisionEnabled::NoCollision);
         //Lidar Sensor
-        // LidarSensor->SetSimulatePhysics(true);
+        LidarSensor->SetSimulatePhysics(true);
         //Wheels
         WheelLeft->SetSimulatePhysics(true);
         WheelRight->SetSimulatePhysics(true);
@@ -148,20 +148,20 @@ bool ATiagoCasterBalls::SetupConstraintsAndPhysics()
         Base_WheelLeft->SetupAttachment(Base);
 
         //Lidar sensor
-        // Base_LidarSensor->ComponentName1.ComponentName = TEXT("Base");
-        // Base_LidarSensor->ComponentName2.ComponentName = TEXT("LidarSensor");
-        // Base_LidarSensor->SetRelativeLocation(FVector(20.2, 0, 0.4));
-        // Base_LidarSensor->SetDisableCollision(true);
-        // Base_LidarSensor->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0);
-        // Base_LidarSensor->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0);
-        // Base_LidarSensor->SetAngularTwistLimit(EAngularConstraintMotion::ACM_Locked, 0);
-        // Base_LidarSensor->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0);
-        // Base_LidarSensor->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0);
-        // Base_LidarSensor->SetLinearZLimit(ELinearConstraintMotion::LCM_Locked, 0);
-        //
-        // LidarSensor->SetupAttachment(Base_LidarSensor);
-        //
-        // Base_LidarSensor->SetupAttachment(Base);
+        Base_LidarSensor->ComponentName1.ComponentName = TEXT("Base");
+        Base_LidarSensor->ComponentName2.ComponentName = TEXT("LidarSensor");
+        Base_LidarSensor->SetRelativeLocation(FVector(20.2, 0, 0.4));
+        Base_LidarSensor->SetDisableCollision(true);
+        Base_LidarSensor->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0);
+        Base_LidarSensor->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0);
+        Base_LidarSensor->SetAngularTwistLimit(EAngularConstraintMotion::ACM_Locked, 0);
+        Base_LidarSensor->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        Base_LidarSensor->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        Base_LidarSensor->SetLinearZLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        
+        LidarSensor->SetupAttachment(Base_LidarSensor);
+        
+        Base_LidarSensor->SetupAttachment(Base);
 
         //Base ring
         // Base_BaseRing->ComponentName1.ComponentName = TEXT("Base");
