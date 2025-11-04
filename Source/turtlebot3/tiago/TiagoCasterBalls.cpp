@@ -1,6 +1,6 @@
-#include "Tiago.h"
+#include "TiagoCasterBalls.h"
 
-ATiago::ATiago(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+ATiagoCasterBalls::ATiagoCasterBalls(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
     VehicleMoveComponentClass = UDifferentialDriveComponent::StaticClass();
     bBodyComponentsCreated = false;
@@ -8,75 +8,76 @@ ATiago::ATiago(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitia
     SetupConstraintsAndPhysics();
 }
 
-bool ATiago::SetupBody()
+bool ATiagoCasterBalls::SetupBody()
 {
     if (bBodyComponentsCreated)
     {
         return false;
     }
 
+    CasterBallFrontLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBallFrontLeft"));
+    CasterBallFrontRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBallFrontRight"));
+    CasterBallBackLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBallBackLeft"));
+    CasterBallBackRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBallBackRight"));
+
     //Constraints
-    Base_WheelLeft = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_WheelLeft"));
-    Base_WheelRight = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_WheelRight"));
+    Base_CasterBallFrontLeft = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_CasterBallFrontLeft"));
+    Base_CasterBallFrontRight = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_CasterBallFrontRight"));
+    Base_CasterBallBackLeft = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_CasterBallBackLeft"));
+    Base_CasterBallBackRight = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_CasterBallBackRight"));
 
     bBodyComponentsCreated = true;
 
     return true;
 }
 
-void ATiago::SetupWheelDrives()
-{
-    if (bBodyComponentsCreated && IsValid(MovementComponent))
-    {
-        UDifferentialDriveComponent* diffDriveComponent = CastChecked<UDifferentialDriveComponent>(MovementComponent);
-        diffDriveComponent->SetWheels(Base_WheelLeft, Base_WheelRight, WheelLeft, WheelRight);
-        diffDriveComponent->WheelRadius = WheelRadius;
-        diffDriveComponent->WheelSeparationHalf = WheelSeparationHalf;
-        diffDriveComponent->SetPerimeter();
-    }
-}
-
-bool ATiago::SetupConstraintsAndPhysics()
+bool ATiagoCasterBalls::SetupConstraintsAndPhysics()
 {
     if (bBodyComponentsCreated)
     {
-        Base_WheelLeft->ComponentName1.ComponentName = TEXT("Base");
-        Base_WheelLeft->ComponentName2.ComponentName = TEXT("WheelLeft");
-        Base_WheelLeft->SetDisableCollision(true);
-        Base_WheelLeft->SetRelativeLocation(FVector(0, -20.22, 7.6));
-        Base_WheelLeft->SetRelativeRotation(FRotator(0, -90, 0));
-        Base_WheelLeft->SetAngularDriveMode(EAngularDriveMode::TwistAndSwing);
-        Base_WheelLeft->SetAngularDriveParams(MaxForce, MaxForce, MaxForce);
-        Base_WheelLeft->SetAngularVelocityDriveTwistAndSwing(true, false);
-        Base_WheelLeft->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0);
-        Base_WheelLeft->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0);
-        Base_WheelLeft->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0);
-        Base_WheelLeft->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0);
-        Base_WheelLeft->SetLinearZLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        //Caster balls
+        Base_CasterBallBackLeft->ComponentName1.ComponentName = TEXT("Base");
+        Base_CasterBallBackLeft->ComponentName2.ComponentName = TEXT("CasterBallBackLeft");
+        Base_CasterBallBackLeft->SetRelativeLocation(FVector(-17.35, 10.2, -3));
+        Base_CasterBallBackLeft->SetDisableCollision(true);
+        Base_CasterBallBackLeft->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        Base_CasterBallBackLeft->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        Base_CasterBallBackLeft->SetLinearZLimit(ELinearConstraintMotion::LCM_Locked, 0);
 
-        Base_WheelRight->ComponentName1.ComponentName = TEXT("Base");
-        Base_WheelRight->ComponentName2.ComponentName = TEXT("WheelRight");
-        Base_WheelRight->SetDisableCollision(true);
-        Base_WheelRight->SetRelativeLocation(FVector(0, 20.22, 7.6));
-        Base_WheelRight->SetRelativeRotation(FRotator(0, 90, 0));
-        Base_WheelRight->SetAngularDriveMode(EAngularDriveMode::TwistAndSwing);
-        Base_WheelRight->SetAngularDriveParams(MaxForce, MaxForce, MaxForce);
-        Base_WheelRight->SetAngularVelocityDriveTwistAndSwing(true, false);
-        Base_WheelRight->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0);
-        Base_WheelRight->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0);
-        Base_WheelRight->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0);
-        Base_WheelRight->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0);
-        Base_WheelRight->SetLinearZLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        Base_CasterBallBackRight->ComponentName1.ComponentName = TEXT("Base");
+        Base_CasterBallBackRight->ComponentName2.ComponentName = TEXT("CasterBallBackRight");
+        Base_CasterBallBackRight->SetRelativeLocation(FVector(-17.35, -10.2, -3));
+        Base_CasterBallBackRight->SetDisableCollision(true);
+        Base_CasterBallBackRight->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        Base_CasterBallBackRight->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        Base_CasterBallBackRight->SetLinearZLimit(ELinearConstraintMotion::LCM_Locked, 0);
 
-        WheelLeft->SetupAttachment(Base_WheelLeft);
-        WheelLeft->SetRelativeRotation(FRotator(0, -90, 0));
-        WheelRight->SetupAttachment(Base_WheelRight);
-        WheelRight->SetRelativeRotation(FRotator(0, 90, 0));
+        Base_CasterBallFrontLeft->ComponentName1.ComponentName = TEXT("Base");
+        Base_CasterBallFrontLeft->ComponentName2.ComponentName = TEXT("CasterBallFrontLeft");
+        Base_CasterBallFrontLeft->SetRelativeLocation(FVector(16.95, 10.2, -3));
+        Base_CasterBallFrontLeft->SetDisableCollision(true);
+        Base_CasterBallFrontLeft->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        Base_CasterBallFrontLeft->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        Base_CasterBallFrontLeft->SetLinearZLimit(ELinearConstraintMotion::LCM_Locked, 0);
 
-        Base_WheelRight->SetupAttachment(Base);
-        Base_WheelLeft->SetupAttachment(Base);
+        Base_CasterBallFrontRight->ComponentName1.ComponentName = TEXT("Base");
+        Base_CasterBallFrontRight->ComponentName2.ComponentName = TEXT("CasterBallFrontRight");
+        Base_CasterBallFrontRight->SetRelativeLocation(FVector(16.95, -10.2, -3));
+        Base_CasterBallFrontRight->SetDisableCollision(true);
+        Base_CasterBallFrontRight->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        Base_CasterBallFrontRight->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        Base_CasterBallFrontRight->SetLinearZLimit(ELinearConstraintMotion::LCM_Locked, 0);
+
+        CasterBallFrontLeft->SetupAttachment(Base_CasterBallFrontLeft);
+        CasterBallFrontRight->SetupAttachment(Base_CasterBallFrontRight);
+        CasterBallBackLeft->SetupAttachment(Base_CasterBallBackLeft);
+        CasterBallBackRight->SetupAttachment(Base_CasterBallBackRight);
+
+        Base_CasterBallFrontLeft->SetupAttachment(Base);
+        Base_CasterBallFrontRight->SetupAttachment(Base);
+        Base_CasterBallBackLeft->SetupAttachment(Base);
+        Base_CasterBallBackRight->SetupAttachment(Base);
         
-
         return true;
     }
     else

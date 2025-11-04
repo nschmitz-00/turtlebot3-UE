@@ -10,9 +10,9 @@
 
 //RapyutaSimulationPlugins
 #include "Robots/RRBaseRobot.h"
-#include "Robots/Tiago/RRTiagoROS2InterfaceOld.h"
+#include "RRTiagoROS2Interface.h"
 #include "Sensors/RR2DLidarComponent.h"
-#include "TiagoBaseOld.generated.h"
+#include "TiagoBase.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTiago, Log, All);
 
@@ -21,7 +21,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTiago, Log, All);
  */
 UCLASS()
 
-class RAPYUTASIMULATIONPLUGINS_API ATiagoBaseOld : public ARRBaseRobot
+class RAPYUTASIMULATIONPLUGINS_API ATiagoBase : public ARRBaseRobot
 {
     GENERATED_BODY()
 
@@ -31,7 +31,7 @@ public:
     *
     * @param ObjectInitializer
     */
-    ATiagoBaseOld(const FObjectInitializer& ObjectInitializer);
+    ATiagoBase(const FObjectInitializer& ObjectInitializer);
 
 protected:
     /**
@@ -66,28 +66,10 @@ protected:
     UStaticMeshComponent* WheelRight = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBackLeftBase = nullptr;
+    UPhysicsConstraintComponent* Base_WheelLeft = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBackRightBase = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterFrontLeftBase = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterFrontRightBase = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBackLeftWheel = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBackRightWheel = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterFrontLeftWheel = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterFrontRightWheel = nullptr;
+    UPhysicsConstraintComponent* Base_WheelRight = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UPhysicsConstraintComponent* Base_LidarSensor = nullptr;
@@ -95,29 +77,6 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UPhysicsConstraintComponent* Base_BaseRing = nullptr;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_CasterBackLeftBase = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_CasterBackRightBase = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_CasterFrontLeftBase = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_CasterFrontRightBase = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* CasterBackLeftBase_CasterBackLeftWheel = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* CasterBackRightBase_CasterBackRightWheel = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* CasterFrontLeftBase_CasterFrontLeftWheel = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* CasterFrontRightBase_CasterFrontRightWheel = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float MaxForce = 1000.f;

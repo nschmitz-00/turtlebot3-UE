@@ -11,5 +11,6 @@ public class turtlebot3ServerTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 		ExtraModuleNames.AddRange( new string[] { "turtlebot3" } );
+		//CppStandard = CppStandardVersion.Cpp17;
 	}
 }

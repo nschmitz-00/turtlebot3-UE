@@ -6,10 +6,10 @@
 #pragma once
 
 #include "Robots//RRRobotROS2Interface.h"
-#include "RRTiagoROS2InterfaceOld.generated.h"
+#include "RRTiagoROS2Interface.generated.h"
 
 UCLASS(ClassGroup = (Custom))
-class RAPYUTASIMULATIONPLUGINS_API URRTiagoROS2InterfaceOld : public URRRobotROS2Interface
+class RAPYUTASIMULATIONPLUGINS_API URRTiagoROS2Interface : public URRRobotROS2Interface
 {
     GENERATED_BODY()
 

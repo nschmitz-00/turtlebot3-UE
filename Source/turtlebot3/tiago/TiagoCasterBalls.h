@@ -1,5 +1,5 @@
 /**
- * @file Tiago.h
+ * @file TiagoCasterBalls.h
  * @brief Child class of #ARRBaseRobot
  *
  */
@@ -13,7 +13,7 @@
 //RapyutaSimulationPlugins
 #include "Drives/DifferentialDriveComponent.h"
 #include "TiagoBase.h"
-#include "Tiago.generated.h"
+#include "TiagoCasterBalls.generated.h"
 
 /**
  * @brief Child class of #ARRBaseRobot
@@ -21,7 +21,7 @@
  * This class is designed to be interitted from Blueprint class to be assgined UStaticMeshComponent
  */
 UCLASS()
-class RAPYUTASIMULATIONPLUGINS_API ATiago : public ATiagoBase
+class RAPYUTASIMULATIONPLUGINS_API ATiagoCasterBalls : public ATiagoBase
 {
     GENERATED_BODY()
 
@@ -31,62 +31,32 @@ public:
      *
      * @param ObjectInitializer
      */
-    ATiago(const FObjectInitializer& ObjectInitializer);
+    ATiagoCasterBalls(const FObjectInitializer& ObjectInitializer);
 
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBackLeftBase = nullptr;
+    UStaticMeshComponent* CasterBallBackLeft = nullptr;
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBackRightBase = nullptr;
+    UStaticMeshComponent* CasterBallBackRight = nullptr;
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterFrontLeftBase = nullptr;
+    UStaticMeshComponent* CasterBallFrontLeft = nullptr;
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterFrontRightBase = nullptr;
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBackLeftWheel = nullptr;
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBackRightWheel = nullptr;
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterFrontLeftWheel = nullptr;
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterFrontRightWheel = nullptr;
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_WheelLeft = nullptr;
+    UStaticMeshComponent* CasterBallFrontRight = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_WheelRight = nullptr;
+    UPhysicsConstraintComponent* Base_CasterBallBackLeft = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_CasterBackLeftBase = nullptr;
+    UPhysicsConstraintComponent* Base_CasterBallBackRight = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_CasterBackRightBase = nullptr;
+    UPhysicsConstraintComponent* Base_CasterBallFrontLeft = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_CasterFrontLeftBase = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_CasterFrontRightBase = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* CasterBackLeftBase_CasterBackLeftWheel = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* CasterBackRightBase_CasterBackRightWheel = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* CasterFrontLeftBase_CasterFrontLeftWheel = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* CasterFrontRightBase_CasterFrontRightWheel = nullptr;
+    UPhysicsConstraintComponent* Base_CasterBallFrontRight = nullptr;
 
     /**
      * @brief Create UStaticMeshComponent, create UPhysicsConstraintComponent
@@ -99,10 +69,5 @@ protected:
      *
      */
     bool SetupConstraintsAndPhysics() override;
-
-    /**
-     * @brief Setup #UDifferentialDriveComponent
-     *
-     */
-    void SetupWheelDrives() override;
+    
 };
