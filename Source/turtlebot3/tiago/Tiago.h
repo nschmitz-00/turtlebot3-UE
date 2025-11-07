@@ -15,9 +15,10 @@
 #include "Drives/DifferentialDriveComponent.h"
 #include "Sensors/RR2DLidarComponent.h"
 #include "RRTiagoROS2Interface.h"
-#include "TiagoCasterBalls.generated.h"
+#include "Drives/RRPhysicsJointComponent.h"
+#include "Tiago.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogTiago, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogTiagoBlub, Log, All);
 
 /**
  * @brief Child class of #ARRBaseRobot
@@ -25,7 +26,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTiago, Log, All);
  * This class is designed to be interitted from Blueprint class to be assgined UStaticMeshComponent
  */
 UCLASS()
-class RAPYUTASIMULATIONPLUGINS_API ATiagoCasterBalls : public ARRBaseRobot
+class RAPYUTASIMULATIONPLUGINS_API ATiago : public ARRBaseRobot
 {
     GENERATED_BODY()
 
@@ -35,7 +36,7 @@ public:
      *
      * @param ObjectInitializer
      */
-    ATiagoCasterBalls(const FObjectInitializer& ObjectInitializer);
+    ATiago(const FObjectInitializer& ObjectInitializer);
 
 protected:
 
@@ -47,14 +48,11 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UStaticMeshComponent* Base = nullptr;
 
-    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    // UStaticMeshComponent* BaseRing = nullptr;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* BaseRing = nullptr;
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UStaticMeshComponent* LidarSensor = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* LidarSensorCounterWeight = nullptr;
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URR2DLidarComponent* LidarComponent = nullptr;
@@ -66,6 +64,25 @@ protected:
     UStaticMeshComponent* WheelRight = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* TorsoFix = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* AntennaLeft = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* AntennaRight = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* TorsoInnerBox = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* TorsoLiftWithArm = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* TorsoLiftJoint = nullptr;
+    
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UPhysicsConstraintComponent* Base_WheelLeft = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -74,33 +91,21 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UPhysicsConstraintComponent* Base_LidarSensor = nullptr;
 
-    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    // UPhysicsConstraintComponent* Base_BaseRing = nullptr;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* Base_BaseRing = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* Base_TorsoFix = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* Base_AntennaLeft = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* Base_AntennaRight = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* Base_TorsoInnerBox = nullptr;
     
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBallBackLeft = nullptr;
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBallBackRight = nullptr;
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBallFrontLeft = nullptr;
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBallFrontRight = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_CasterBallBackLeft = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_CasterBallBackRight = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_CasterBallFrontLeft = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_CasterBallFrontRight = nullptr;
-
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float MaxForce = 1000.f;
 
