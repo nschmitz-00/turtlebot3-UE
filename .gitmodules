@@ -1,6 +1,6 @@
 [submodule "Plugins/rclUE"]
 	path = Plugins/rclUE
-	url = https://github.com/rapyuta-robotics/rclUE.git
+	url = git@github.com:nschmitz-00/rclUE.git
 [submodule "Plugins/RapyutaSimulationPlugins"]
 	path = Plugins/RapyutaSimulationPlugins
-	url = https://github.com/rapyuta-robotics/RapyutaSimulationPlugins.git
+	url = git@github.com:nschmitz-00/RapyutaSimulationPlugins.git
