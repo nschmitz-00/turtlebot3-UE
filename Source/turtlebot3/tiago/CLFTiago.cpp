@@ -115,9 +115,9 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         HeadBase_HeadTop->SetRelativeLocation(FVector(0.5, 0, 9.8));
         HeadBase_HeadTop->SetRelativeRotation(FRotator(0, 0, 0));
         HeadBase_HeadTop->LinearDOF = 0;
-        HeadBase_HeadTop->RotationalDOF = 2;
+        HeadBase_HeadTop->RotationalDOF = 3;
         HeadBase_HeadTop->AngularForceLimit = MaxForce;
-        HeadBase_HeadTop->AngularVelMax = FVector(0, 0, 3600);
+        HeadBase_HeadTop->AngularVelMax = FVector(0, 3600, 0);
 
         HeadTop->SetupAttachment(HeadBase_HeadTop);
         HeadTop->SetRelativeLocation(FVector(0,0,0));
