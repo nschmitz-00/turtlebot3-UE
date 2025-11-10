@@ -27,6 +27,15 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URRPhysicsJointComponent* Base_WheelRight = nullptr;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Base_TorsoLift = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* TorsoLift_HeadBase = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* HeadBase_HeadTop = nullptr;
+
     bool SetupBody() override;
 
     bool SetupConstraintsAndPhysics() override;

@@ -32,6 +32,9 @@ protected:
     UStaticMeshComponent* Base = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* BaseRing = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UStaticMeshComponent* LidarSensor = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -44,7 +47,43 @@ protected:
     UStaticMeshComponent* WheelRight = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* TorsoFix = nullptr;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* AntennaLeft = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* AntennaRight = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* TorsoInnerBox = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* TorsoLiftWithArm = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* HeadBase = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* HeadTop = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UPhysicsConstraintComponent* Base_LidarSensor = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* Base_BaseRing = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* Base_TorsoFix = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* Base_AntennaLeft = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* Base_AntennaRight = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* Base_TorsoInnerBox = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float MaxForce = 1000.f;

@@ -33,8 +33,6 @@ bool ATiago::SetupBody()
     SetBaseMeshComp(Base, true, false);
     BaseMeshComp->BodyInstance.bLockXRotation = true;
     BaseMeshComp->BodyInstance.bLockYRotation = true;
-
-    AddLink(TEXT("base_link"), Base);
     
     // Base Ring
     BaseRing = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseRing"));
@@ -60,6 +58,7 @@ bool ATiago::SetupBody()
     TorsoLiftJoint = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("TorsoLiftJoint"));
     TorsoLiftJoint->SetupAttachment(Base);
 
+    
     AddLink(TEXT("torso_lift_link"), TorsoLiftWithArm);
     
     // ================== Base Constraints ==================
