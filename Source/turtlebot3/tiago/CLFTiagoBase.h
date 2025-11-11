@@ -68,6 +68,24 @@ protected:
     UStaticMeshComponent* HeadTop = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* Arm1 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* Arm2 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* Arm3 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* Arm4 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* Arm5 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* Arm6 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UPhysicsConstraintComponent* Base_LidarSensor = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)

@@ -36,6 +36,24 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URRPhysicsJointComponent* HeadBase_HeadTop = nullptr;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* TorsoLift_Arm1 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Arm1_Arm2 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Arm2_Arm3 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Arm3_Arm4 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Arm4_Arm5 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Arm5_Arm6 = nullptr;
+
     bool SetupBody() override;
 
     bool SetupConstraintsAndPhysics() override;

@@ -49,6 +49,14 @@ bool ACLFTiagoBase::SetupBody()
     HeadBase = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HeadBase"));
     HeadTop = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HeadTop"));
 
+    // Arm
+    Arm1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm1"));
+    Arm2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm2"));
+    Arm3 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm3"));
+    Arm4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm4"));
+    Arm5 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm5"));
+    Arm6 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm6"));
+
     // Constraints
     Base_LidarSensor = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_LidarSensor"));
     Base_BaseRing = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_BaseRing"));
@@ -96,7 +104,14 @@ bool ACLFTiagoBase::SetupConstraintsAndPhysics()
         //Head
         HeadBase->SetSimulatePhysics(true);
         HeadTop->SetSimulatePhysics(true);
-
+        //Arm
+        Arm1->SetSimulatePhysics(true);
+        Arm2->SetSimulatePhysics(true);
+        Arm3->SetSimulatePhysics(true);
+        Arm4->SetSimulatePhysics(true);
+        Arm5->SetSimulatePhysics(true);
+        Arm6->SetSimulatePhysics(true);
+        
         // ======================== Constraints ========================
 
         //Lidar
