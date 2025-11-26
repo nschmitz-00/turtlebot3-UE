@@ -7,6 +7,7 @@ ACLFTiagoBase::ACLFTiagoBase(const FObjectInitializer& ObjectInitializer) : Supe
     ROS2InterfaceClass = UCLFTiagoROS2Interface::StaticClass();
     PrimaryActorTick.bCanEverTick = true;
     bBodyComponentsCreated = false;
+    bInitializeJoints = true;
     SetupBody();
     SetupConstraintsAndPhysics();
     UE_LOG_WITH_INFO_SHORT(

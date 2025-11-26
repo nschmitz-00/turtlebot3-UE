@@ -106,7 +106,7 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         WheelRight->SetRelativeLocation(FVector(0, 0, 0));
         WheelRight->SetRelativeRotation(FRotator(0, -90, 0));
 
-        // set joint parameters
+        // set joint parameters TODO: Fix relative rotations!!!
         Base_WheelLeft->SetRelativeLocation(FVector(0, -20.22, 0));
         Base_WheelLeft->SetRelativeRotation(FRotator(0, -90, 0));
         Base_WheelLeft->LinearDOF = 0;
