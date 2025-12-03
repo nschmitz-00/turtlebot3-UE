@@ -57,6 +57,16 @@ bool ACLFTiagoBase::SetupBody()
     Arm4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm4"));
     Arm5 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm5"));
     Arm6 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm6"));
+    
+    // Gripper
+    GripperLink = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperLink"));
+    GripperLeftFingerLink = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperLeftFingerLink"));
+    GripperRightFingerLink = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperRightFingerLink"));
+    GripperFingerMountL = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerMountL"));
+    GripperFingerMountR = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerMountR"));
+    GripperFingerL1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerL1"));
+    GripperFingerR1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerR1"));
+    GripperFingerR2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerR2"));
 
     // Constraints
     Base_LidarSensor = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_LidarSensor"));
@@ -112,6 +122,15 @@ bool ACLFTiagoBase::SetupConstraintsAndPhysics()
         Arm4->SetSimulatePhysics(true);
         Arm5->SetSimulatePhysics(true);
         Arm6->SetSimulatePhysics(true);
+        //Gripper
+        GripperLink->SetSimulatePhysics(true);
+        GripperLeftFingerLink->SetSimulatePhysics(true);
+        GripperRightFingerLink->SetSimulatePhysics(true);
+        GripperFingerMountL->SetSimulatePhysics(true);
+        GripperFingerMountR->SetSimulatePhysics(true);
+        GripperFingerL1->SetSimulatePhysics(true);
+        GripperFingerR1->SetSimulatePhysics(true);
+        GripperFingerR2->SetSimulatePhysics(true);
         
         // ======================== Constraints ========================
 

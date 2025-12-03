@@ -30,6 +30,11 @@ bool ACLFTiago::SetupBody()
     AddLink(TEXT("arm_4_link"), Arm4);
     AddLink(TEXT("arm_5_link"), Arm5);
     AddLink(TEXT("arm_6_link"), Arm6);
+    AddLink(TEXT("gripper_link"), GripperLink);
+    AddLink(TEXT("gripper_left_finger_link"), GripperLeftFingerLink);
+    AddLink(TEXT("gripper_right_finger_link"), GripperRightFingerLink);
+    AddLink(TEXT("gripper_finger_mount_l_link"), GripperFingerMountL);
+    AddLink(TEXT("gripper_finger_mount_r_link"), GripperFingerMountR);
     
     //Constraints
     Base_WheelLeft = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_WheelLeft"));
@@ -65,6 +70,25 @@ bool ACLFTiago::SetupBody()
     Arm5_Arm6 = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Arm5_Arm6"));
     Arm5_Arm6->SetupAttachment(Arm5);
 
+    Arm6_GripperLink = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Arm6_GripperLink"));
+    Arm6_GripperLink->SetupAttachment(Arm6);
+
+    GripperLink_GripperLeftFingerLink = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("GripperLink_GripperLeftFingerLink"));
+    GripperLink_GripperLeftFingerLink->SetupAttachment(GripperLink);
+
+    GripperLink_GripperRightFingerLink = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("GripperLink_GripperRightFingerLink"));
+    GripperLink_GripperRightFingerLink->SetupAttachment(GripperLink);
+
+    GripperLeftFingerLink_GripperFingerMountL = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("GripperLeftFingerLink_GripperFingerMountL"));
+    GripperLeftFingerLink_GripperFingerMountL->SetupAttachment(GripperLeftFingerLink);
+
+    GripperRightFingerLink_GripperFingerMountR = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("GripperRightFingerLink_GripperFingerMountR"));
+    GripperRightFingerLink_GripperFingerMountR->SetupAttachment(GripperRightFingerLink);
+
+    GripperFingerMountL_GripperFingerL1 = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("GripperFingerMountL_GripperFingerL1"));
+    GripperFingerMountR_GripperFingerR1 = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("GripperFingerMountR_GripperFingerR1"));
+    GripperFingerMountR_GripperFingerR2 = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("GripperFingerMountR_GripperFingerR2"));
+
     bBodyComponentsCreated = true;
 
     return true;
@@ -98,7 +122,13 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         AddJoint(TEXT("arm_3_link"), TEXT("arm_4_link"), TEXT("arm_4_joint"), Arm3_Arm4);
         AddJoint(TEXT("arm_4_link"), TEXT("arm_5_link"), TEXT("arm_5_joint"), Arm4_Arm5);
         AddJoint(TEXT("arm_5_link"), TEXT("arm_6_link"), TEXT("arm_6_joint"), Arm5_Arm6);
+        AddJoint(TEXT("arm_6_link"), TEXT("gripper_link"), TEXT("arm_7_joint"), Arm6_GripperLink);
+        AddJoint(TEXT("gripper_link"), TEXT("gripper_left_finger_link"), TEXT("gripper_finger_joint"), GripperLink_GripperLeftFingerLink);
+        AddJoint(TEXT("gripper_link"), TEXT("gripper_right_finger_link"), TEXT("gripper_right_finger_joint"), GripperLink_GripperRightFingerLink);
+        AddJoint(TEXT("gripper_left_finger_link"), TEXT("gripper_finger_mount_l_link"), TEXT("gripper_finger_mount_l_joint"), GripperLeftFingerLink_GripperFingerMountL);
+        AddJoint(TEXT("gripper_right_finger_link"), TEXT("gripper_finger_mount_r_link"), TEXT("gripper_finger_mount_r_joint"), GripperRightFingerLink_GripperFingerMountR);
 
+        
         WheelLeft->SetupAttachment(Base_WheelLeft);
         WheelLeft->SetRelativeLocation(FVector(0, 0, 0));
         WheelLeft->SetRelativeRotation(FRotator(0, 90, 0));
@@ -220,6 +250,109 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         Arm6->SetupAttachment(Arm5_Arm6);
         Arm6->SetRelativeLocation(FVector(0,0,0));
         Arm6->SetRelativeRotation(FRotator(0,0,0));
+
+        //Gripper
+        Arm6_GripperLink->SetRelativeLocation(FVector(1,0,0));
+        Arm6_GripperLink->SetRelativeRotation(FRotator(0,0,0));
+        Arm6_GripperLink->LinearDOF = 0;
+        Arm6_GripperLink->RotationalDOF = 1;
+        Arm6_GripperLink->AngularForceLimit = MaxForce;
+        Arm6_GripperLink->AngularVelMax = FVector(3600,0,0);
+
+        GripperLink->SetupAttachment(Arm6_GripperLink);
+        GripperLink->SetRelativeLocation(FVector(0,0,0));
+        GripperLink->SetRelativeRotation(FRotator(0,0,0));
+
+        GripperLink_GripperLeftFingerLink->SetRelativeLocation(FVector(-3.4,0,0));
+        GripperLink_GripperLeftFingerLink->SetRelativeRotation(FRotator(0,0,0));
+        GripperLink_GripperLeftFingerLink->LinearDOF = 1;
+        GripperLink_GripperLeftFingerLink->RotationalDOF = 0;
+        GripperLink_GripperLeftFingerLink->LinearForceLimit = MaxForce;
+        GripperLink_GripperLeftFingerLink->LinearVelMax = FVector(10000, 0,0);
+
+        GripperLeftFingerLink->SetupAttachment(GripperLink_GripperLeftFingerLink);
+        GripperLeftFingerLink->SetRelativeLocation(FVector(0,0,0));
+        GripperLeftFingerLink->SetRelativeRotation(FRotator(0,0,0));
+
+        GripperLink_GripperRightFingerLink->SetRelativeLocation(FVector(3.4,0,0));
+        GripperLink_GripperRightFingerLink->SetRelativeRotation(FRotator(0,0,0));
+        GripperLink_GripperRightFingerLink->LinearDOF = 1;
+        GripperLink_GripperRightFingerLink->RotationalDOF = 0;
+        GripperLink_GripperRightFingerLink->LinearForceLimit = MaxForce;
+        GripperLink_GripperRightFingerLink->LinearVelMax = FVector(10000,0,0);
+
+        GripperRightFingerLink->SetupAttachment(GripperLink_GripperRightFingerLink);
+        GripperRightFingerLink->SetRelativeLocation(FVector(0,0,0));
+        GripperRightFingerLink->SetRelativeRotation(FRotator(0,0,0));
+
+        GripperLeftFingerLink_GripperFingerMountL->SetRelativeLocation(FVector(5,0,-16.5));
+        GripperLeftFingerLink_GripperFingerMountL->SetRelativeRotation(FRotator(0,0,0));
+        GripperLeftFingerLink_GripperFingerMountL->LinearDOF = 0;
+        GripperLeftFingerLink_GripperFingerMountL->RotationalDOF = 1;
+        GripperLeftFingerLink_GripperFingerMountL->AngularForceLimit = MaxForce;
+        GripperLeftFingerLink_GripperFingerMountL->AngularVelMax = FVector(3600,0,0);
+
+        GripperFingerMountL->SetupAttachment(GripperLeftFingerLink_GripperFingerMountL);
+        GripperFingerMountL->SetRelativeLocation(FVector(0,0,0));
+        GripperFingerMountL->SetRelativeRotation(FRotator(0,0,0));
+
+        GripperRightFingerLink_GripperFingerMountR->SetRelativeLocation(FVector(-5,0,-16.5));
+        GripperRightFingerLink_GripperFingerMountR->SetRelativeRotation(FRotator(0,0,0));
+        GripperRightFingerLink_GripperFingerMountR->LinearDOF = 0;
+        GripperRightFingerLink_GripperFingerMountR->RotationalDOF = 1;
+        GripperRightFingerLink_GripperFingerMountR->AngularForceLimit = MaxForce;
+        GripperRightFingerLink_GripperFingerMountR->AngularVelMax = FVector(3600,0,0);
+
+        GripperFingerMountR->SetupAttachment(GripperRightFingerLink_GripperFingerMountR);
+        GripperFingerMountR->SetRelativeLocation(FVector(0,0,0));
+        GripperFingerMountR->SetRelativeRotation(FRotator(0,0,0));
+
+
+        // Finger
+        GripperFingerMountL_GripperFingerL1->ComponentName1.ComponentName = TEXT("GripperFingerMountL");
+        GripperFingerMountL_GripperFingerL1->ComponentName2.ComponentName = TEXT("GripperFingerL1");
+        GripperFingerMountL_GripperFingerL1->SetRelativeLocation(FVector(0,1,0.4));
+        GripperFingerMountL_GripperFingerL1->SetDisableCollision(true);
+        GripperFingerMountL_GripperFingerL1->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0);
+        GripperFingerMountL_GripperFingerL1->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0);
+        GripperFingerMountL_GripperFingerL1->SetAngularTwistLimit(EAngularConstraintMotion::ACM_Locked, 0);
+        GripperFingerMountL_GripperFingerL1->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        GripperFingerMountL_GripperFingerL1->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        GripperFingerMountL_GripperFingerL1->SetLinearZLimit(ELinearConstraintMotion::LCM_Locked, 0);
+
+        GripperFingerL1->SetupAttachment(GripperFingerMountL_GripperFingerL1);
+
+        GripperFingerMountL_GripperFingerL1->SetupAttachment(GripperFingerMountL);
+
+        GripperFingerMountR_GripperFingerR1->ComponentName1.ComponentName = TEXT("GripperFingerMountR");
+        GripperFingerMountR_GripperFingerR1->ComponentName2.ComponentName = TEXT("GripperFingerR1");
+        GripperFingerMountR_GripperFingerR1->SetRelativeLocation(FVector(2.25, 1, 0.4));
+        GripperFingerMountR_GripperFingerR1->SetDisableCollision(true);
+        GripperFingerMountR_GripperFingerR1->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0);
+        GripperFingerMountR_GripperFingerR1->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0);
+        GripperFingerMountR_GripperFingerR1->SetAngularTwistLimit(EAngularConstraintMotion::ACM_Locked, 0);
+        GripperFingerMountR_GripperFingerR1->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        GripperFingerMountR_GripperFingerR1->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        GripperFingerMountR_GripperFingerR1->SetLinearZLimit(ELinearConstraintMotion::LCM_Locked, 0);
+
+        GripperFingerR1->SetupAttachment(GripperFingerMountR_GripperFingerR1);
+
+        GripperFingerMountR_GripperFingerR1->SetupAttachment(GripperFingerMountR);
+
+        GripperFingerMountR_GripperFingerR2->ComponentName1.ComponentName = TEXT("GripperFingerMountR");
+        GripperFingerMountR_GripperFingerR2->ComponentName2.ComponentName = TEXT("GripperFingerR2");
+        GripperFingerMountR_GripperFingerR2->SetRelativeLocation(FVector(-2.25, 1, 0.4));
+        GripperFingerMountR_GripperFingerR2->SetDisableCollision(true);
+        GripperFingerMountR_GripperFingerR2->SetAngularSwing1Limit(EAngularConstraintMotion::ACM_Locked, 0);
+        GripperFingerMountR_GripperFingerR2->SetAngularSwing2Limit(EAngularConstraintMotion::ACM_Locked, 0);
+        GripperFingerMountR_GripperFingerR2->SetAngularTwistLimit(EAngularConstraintMotion::ACM_Locked, 0);
+        GripperFingerMountR_GripperFingerR2->SetLinearXLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        GripperFingerMountR_GripperFingerR2->SetLinearYLimit(ELinearConstraintMotion::LCM_Locked, 0);
+        GripperFingerMountR_GripperFingerR2->SetLinearZLimit(ELinearConstraintMotion::LCM_Locked, 0);
+
+        GripperFingerR2->SetupAttachment(GripperFingerMountR_GripperFingerR2);
+
+        GripperFingerMountR_GripperFingerR2->SetupAttachment(GripperFingerMountR); 
         
         return true;
     }

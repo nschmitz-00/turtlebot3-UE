@@ -7,6 +7,7 @@
 #include "CLFTiagoBase.h"
 #include "Drives/RRDifferentialDriveComponent.h"
 #include "Drives/RRPhysicsJointComponent.h"
+#include "PhysicsEngine/PhysicsConstraintComponent.h"
 #include "Robots/RRBaseRobot.h"
 
 #include "CLFTiago.generated.h"
@@ -53,6 +54,32 @@ protected:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URRPhysicsJointComponent* Arm5_Arm6 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Arm6_GripperLink = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* GripperLink_GripperLeftFingerLink = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* GripperLink_GripperRightFingerLink = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* GripperLeftFingerLink_GripperFingerMountL = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* GripperRightFingerLink_GripperFingerMountR = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* GripperFingerMountL_GripperFingerL1 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* GripperFingerMountR_GripperFingerR1 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPhysicsConstraintComponent* GripperFingerMountR_GripperFingerR2 = nullptr;
+
+    
 
     bool SetupBody() override;
 
