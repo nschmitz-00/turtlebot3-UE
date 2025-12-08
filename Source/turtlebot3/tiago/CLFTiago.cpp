@@ -1,6 +1,5 @@
 #include "CLFTiago.h"
 
-#include "NavigationSystemTypes.h"
 
 ACLFTiago::ACLFTiago(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -35,6 +34,8 @@ bool ACLFTiago::SetupBody()
     AddLink(TEXT("gripper_right_finger_link"), GripperRightFingerLink);
     AddLink(TEXT("gripper_finger_mount_l_link"), GripperFingerMountL);
     AddLink(TEXT("gripper_finger_mount_r_link"), GripperFingerMountR);
+    AddLink(TEXT("caster_back_left_1_link"), CasterBase1);
+    AddLink(TEXT("caster_back_left_2_link"), CasterRoll1);
     
     //Constraints
     Base_WheelLeft = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_WheelLeft"));
@@ -45,6 +46,12 @@ bool ACLFTiago::SetupBody()
 
     Base_TorsoLift = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_TorsoLift"));
     Base_TorsoLift->SetupAttachment(Base);
+
+    Base_CasterBase1 = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_Caster1Base"));
+    Base_CasterBase1->SetupAttachment(Base);
+
+    CasterBase1_CasterRoll1 = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Caster1Base_Caster1Roll"));
+    CasterBase1_CasterRoll1->SetupAttachment(CasterBase1);
 
     TorsoLift_HeadBase = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("TorsoLift_HeadBase"));
     TorsoLift_HeadBase->SetupAttachment(TorsoLiftWithArm);
@@ -127,7 +134,8 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         AddJoint(TEXT("gripper_link"), TEXT("gripper_right_finger_link"), TEXT("gripper_right_finger_joint"), GripperLink_GripperRightFingerLink);
         AddJoint(TEXT("gripper_left_finger_link"), TEXT("gripper_finger_mount_l_link"), TEXT("gripper_finger_mount_l_joint"), GripperLeftFingerLink_GripperFingerMountL);
         AddJoint(TEXT("gripper_right_finger_link"), TEXT("gripper_finger_mount_r_link"), TEXT("gripper_finger_mount_r_joint"), GripperRightFingerLink_GripperFingerMountR);
-
+        AddJoint(TEXT("base_link"), TEXT("caster_back_left_1_link"), TEXT("caster_back_left_1_joint"), Base_CasterBase1);
+        AddJoint(TEXT("caster_back_left_1_link"), TEXT("caster_back_left_2_link"), TEXT("caster_back_left_2_joint"), CasterBase1_CasterRoll1);
         
         WheelLeft->SetupAttachment(Base_WheelLeft);
         WheelLeft->SetRelativeLocation(FVector(0, 0, 0));
@@ -151,9 +159,28 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         Base_WheelRight->AngularForceLimit = MaxForce;
         Base_WheelRight->AngularVelMax = FVector(3600, 0, 0);
 
-        TorsoLiftWithArm->SetupAttachment(Base_TorsoLift);
-        TorsoLiftWithArm->SetRelativeLocation(FVector(0,0,0));
-        TorsoLiftWithArm->SetRelativeRotation(FRotator(0, 0, 0));
+        //Caster
+        Base_CasterBase1->SetRelativeLocation(FVector(-17.35,10.2,-3.35));
+        Base_CasterBase1->SetRelativeRotation(FRotator(0,0,0));
+        Base_CasterBase1->LinearDOF = 0;
+        Base_CasterBase1->RotationalDOF = 1;
+        Base_CasterBase1->AngularForceLimit = MaxForce;
+        Base_CasterBase1->AngularVelMax = FVector(3600, 0,0);
+
+        CasterBase1->SetupAttachment(Base_CasterBase1);
+        CasterBase1->SetRelativeLocation(FVector(0,0,0));
+        CasterBase1->SetRelativeRotation(FRotator(0,0,0));
+
+        CasterBase1_CasterRoll1->SetRelativeLocation(FVector(-1.6, 0, -0.04));
+        CasterBase1_CasterRoll1->SetRelativeRotation(FRotator(0,0,0));
+        CasterBase1_CasterRoll1->LinearDOF = 0;
+        CasterBase1_CasterRoll1->RotationalDOF = 1;
+        CasterBase1_CasterRoll1->AngularForceLimit = MaxForce;
+        CasterBase1_CasterRoll1->AngularVelMax = FVector(3600, 0, 0);
+
+        CasterRoll1->SetupAttachment(CasterBase1_CasterRoll1);
+        CasterRoll1->SetRelativeLocation(FVector(0,0,0));
+        CasterRoll1->SetRelativeRotation(FRotator(0,0,0));
 
         Base_TorsoLift->SetRelativeLocation(FVector(-6.2, 0, 88.85));
         Base_TorsoLift->SetRelativeRotation(FRotator(0,0,0));
@@ -162,6 +189,10 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         //Base_TorsoLift->PositionMax = FVector(0, 0, 35.0);
         //Base_TorsoLift->PositionMin = FVector(0, 0,0);
         //Base_TorsoLift->AngularVelMax = FVector(0, 0,0);
+
+        TorsoLiftWithArm->SetupAttachment(Base_TorsoLift);
+        TorsoLiftWithArm->SetRelativeLocation(FVector(0,0,0));
+        TorsoLiftWithArm->SetRelativeRotation(FRotator(0, 0, 0));
 
         TorsoLift_HeadBase->SetRelativeLocation(FVector(18.2, 0, 0));
         TorsoLift_HeadBase->SetRelativeRotation(FRotator(0, 0, 0));

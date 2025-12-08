@@ -41,6 +41,10 @@ bool ACLFTiagoBase::SetupBody()
     WheelLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WheelLeft"));
     WheelRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WheelRight"));
 
+    //Caster
+    CasterBase1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase1"));
+    CasterRoll1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll1"));
+
     // Torso
     TorsoFix = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TorsoFix"));
     TorsoInnerBox = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TorsoInnerBox"));
@@ -105,6 +109,9 @@ bool ACLFTiagoBase::SetupConstraintsAndPhysics()
         //Wheels
         WheelLeft->SetSimulatePhysics(true);
         WheelRight->SetSimulatePhysics(true);
+        //Caster
+        CasterBase1->SetSimulatePhysics(true);
+        CasterRoll1->SetSimulatePhysics(true);
         //Torso
         TorsoFix->SetSimulatePhysics(true);
         TorsoInnerBox->SetSimulatePhysics(true);

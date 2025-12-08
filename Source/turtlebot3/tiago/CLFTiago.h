@@ -32,6 +32,12 @@ protected:
     URRPhysicsJointComponent* Base_TorsoLift = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Base_CasterBase1 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* CasterBase1_CasterRoll1 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URRPhysicsJointComponent* TorsoLift_HeadBase = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)

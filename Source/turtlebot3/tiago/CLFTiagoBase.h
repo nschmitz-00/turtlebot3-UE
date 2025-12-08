@@ -110,6 +110,12 @@ protected:
     UStaticMeshComponent* GripperFingerR2 = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* CasterBase1 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* CasterRoll1 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UPhysicsConstraintComponent* Base_LidarSensor = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -125,7 +131,7 @@ protected:
     UPhysicsConstraintComponent* Base_AntennaRight = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_TorsoInnerBox = nullptr;
+    UPhysicsConstraintComponent* Base_TorsoInnerBox = nullptr;    
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float MaxForce = 1000.f;
