@@ -85,53 +85,53 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UStaticMeshComponent* Arm6 = nullptr;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* GripperLink = nullptr;
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* GripperLink = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* GripperLeftFingerLink = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* GripperRightFingerLink = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* GripperFingerMountL = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* GripperFingerMountR = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* GripperFingerL1 = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* GripperFingerR1 = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* GripperFingerR2 = nullptr;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* GripperLeftFingerLink = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* GripperRightFingerLink = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* GripperFingerMountL = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* GripperFingerMountR = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* GripperFingerL1 = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* GripperFingerR1 = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* GripperFingerR2 = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBase1 = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterRoll1 = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBase2 = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterRoll2 = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBase3 = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterRoll3 = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterBase4 = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* CasterRoll4 = nullptr;
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* CasterBase1 = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* CasterRoll1 = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* CasterBase2 = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* CasterRoll2 = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* CasterBase3 = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* CasterRoll3 = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* CasterBase4 = nullptr;
+    //
+    // UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    // UStaticMeshComponent* CasterRoll4 = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UPhysicsConstraintComponent* Base_LidarSensor = nullptr;

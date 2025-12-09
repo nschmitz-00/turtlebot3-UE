@@ -42,14 +42,14 @@ bool ACLFTiagoBase::SetupBody()
     WheelRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WheelRight"));
 
     //Caster
-    CasterBase1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase1"));
-    CasterRoll1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll1"));
-    CasterBase2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase2"));
-    CasterRoll2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll2"));
-    CasterBase3 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase3"));
-    CasterRoll3 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll3"));
-    CasterBase4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase4"));
-    CasterRoll4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll4"));
+    // CasterBase1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase1"));
+    // CasterRoll1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll1"));
+    // CasterBase2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase2"));
+    // CasterRoll2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll2"));
+    // CasterBase3 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase3"));
+    // CasterRoll3 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll3"));
+    // CasterBase4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase4"));
+    // CasterRoll4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll4"));
 
     // Torso
     TorsoFix = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TorsoFix"));
@@ -69,14 +69,14 @@ bool ACLFTiagoBase::SetupBody()
     Arm6 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm6"));
     
     // Gripper
-    GripperLink = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperLink"));
-    GripperLeftFingerLink = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperLeftFingerLink"));
-    GripperRightFingerLink = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperRightFingerLink"));
-    GripperFingerMountL = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerMountL"));
-    GripperFingerMountR = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerMountR"));
-    GripperFingerL1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerL1"));
-    GripperFingerR1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerR1"));
-    GripperFingerR2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerR2"));
+    // GripperLink = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperLink"));
+    // GripperLeftFingerLink = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperLeftFingerLink"));
+    // GripperRightFingerLink = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperRightFingerLink"));
+    // GripperFingerMountL = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerMountL"));
+    // GripperFingerMountR = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerMountR"));
+    // GripperFingerL1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerL1"));
+    // GripperFingerR1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerR1"));
+    // GripperFingerR2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperFingerR2"));
 
     // Constraints
     Base_LidarSensor = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_LidarSensor"));
@@ -116,14 +116,14 @@ bool ACLFTiagoBase::SetupConstraintsAndPhysics()
         WheelLeft->SetSimulatePhysics(true);
         WheelRight->SetSimulatePhysics(true);
         //Caster
-        CasterBase1->SetSimulatePhysics(true);
-        CasterRoll1->SetSimulatePhysics(true);
-        CasterBase2->SetSimulatePhysics(true);
-        CasterRoll2->SetSimulatePhysics(true);
-        CasterBase3->SetSimulatePhysics(true);
-        CasterRoll3->SetSimulatePhysics(true);
-        CasterBase4->SetSimulatePhysics(true);
-        CasterRoll4->SetSimulatePhysics(true);
+        // CasterBase1->SetSimulatePhysics(true);
+        // CasterRoll1->SetSimulatePhysics(true);
+        // CasterBase2->SetSimulatePhysics(true);
+        // CasterRoll2->SetSimulatePhysics(true);
+        // CasterBase3->SetSimulatePhysics(true);
+        // CasterRoll3->SetSimulatePhysics(true);
+        // CasterBase4->SetSimulatePhysics(true);
+        // CasterRoll4->SetSimulatePhysics(true);
         //Torso
         TorsoFix->SetSimulatePhysics(true);
         TorsoInnerBox->SetSimulatePhysics(true);
@@ -142,14 +142,14 @@ bool ACLFTiagoBase::SetupConstraintsAndPhysics()
         Arm5->SetSimulatePhysics(true);
         Arm6->SetSimulatePhysics(true);
         //Gripper
-        GripperLink->SetSimulatePhysics(true);
-        GripperLeftFingerLink->SetSimulatePhysics(true);
-        GripperRightFingerLink->SetSimulatePhysics(true);
-        GripperFingerMountL->SetSimulatePhysics(true);
-        GripperFingerMountR->SetSimulatePhysics(true);
-        GripperFingerL1->SetSimulatePhysics(true);
-        GripperFingerR1->SetSimulatePhysics(true);
-        GripperFingerR2->SetSimulatePhysics(true);
+        // GripperLink->SetSimulatePhysics(true);
+        // GripperLeftFingerLink->SetSimulatePhysics(true);
+        // GripperRightFingerLink->SetSimulatePhysics(true);
+        // GripperFingerMountL->SetSimulatePhysics(true);
+        // GripperFingerMountR->SetSimulatePhysics(true);
+        // GripperFingerL1->SetSimulatePhysics(true);
+        // GripperFingerR1->SetSimulatePhysics(true);
+        // GripperFingerR2->SetSimulatePhysics(true);
         
         // ======================== Constraints ========================
 
