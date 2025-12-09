@@ -196,6 +196,8 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         Base_CasterBase1->LinearDOF = 0;
         Base_CasterBase1->RotationalDOF = 1;
         Base_CasterBase1->AngularForceLimit = MaxForce;
+        Base_CasterBase1->AngularSpring = CasterBaseAngularSpring;
+        Base_CasterBase1->AngularDamper = CasterBaseAngularDamper;
         Base_CasterBase1->AngularVelMax = FVector(3600, 0,0);
         
         CasterBase1->SetupAttachment(Base_CasterBase1);
@@ -207,6 +209,8 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         CasterBase1_CasterRoll1->LinearDOF = 0;
         CasterBase1_CasterRoll1->RotationalDOF = 1;
         CasterBase1_CasterRoll1->AngularForceLimit = MaxForce;
+        CasterBase1_CasterRoll1->AngularSpring = CasterRollAngularSpring;
+        CasterBase1_CasterRoll1->AngularDamper = CasterRollAngularDamper;
         CasterBase1_CasterRoll1->AngularVelMax = FVector(3600, 0, 0);
         
         CasterRoll1->SetupAttachment(CasterBase1_CasterRoll1);
@@ -219,6 +223,8 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         Base_CasterBase2->LinearDOF = 0;
         Base_CasterBase2->RotationalDOF = 1;
         Base_CasterBase2->AngularForceLimit = MaxForce;
+        Base_CasterBase2->AngularSpring = CasterBaseAngularSpring;
+        Base_CasterBase2->AngularDamper = CasterBaseAngularDamper;
         Base_CasterBase2->AngularVelMax = FVector(3600, 0,0);
         
         CasterBase2->SetupAttachment(Base_CasterBase2);
@@ -230,6 +236,8 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         CasterBase2_CasterRoll2->LinearDOF = 0;
         CasterBase2_CasterRoll2->RotationalDOF = 1;
         CasterBase2_CasterRoll2->AngularForceLimit = MaxForce;
+        CasterBase2_CasterRoll2->AngularSpring = CasterRollAngularSpring;
+        CasterBase2_CasterRoll2->AngularDamper = CasterRollAngularDamper;
         CasterBase2_CasterRoll2->AngularVelMax = FVector(3600, 0, 0);
         
         CasterRoll2->SetupAttachment(CasterBase2_CasterRoll2);
@@ -242,6 +250,8 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         Base_CasterBase3->LinearDOF = 0;
         Base_CasterBase3->RotationalDOF = 1;
         Base_CasterBase3->AngularForceLimit = MaxForce;
+        Base_CasterBase3->AngularSpring = CasterBaseAngularSpring;
+        Base_CasterBase3->AngularDamper = CasterBaseAngularDamper;
         Base_CasterBase3->AngularVelMax = FVector(3600, 0,0);
         
         CasterBase3->SetupAttachment(Base_CasterBase3);
@@ -253,6 +263,8 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         CasterBase3_CasterRoll3->LinearDOF = 0;
         CasterBase3_CasterRoll3->RotationalDOF = 1;
         CasterBase3_CasterRoll3->AngularForceLimit = MaxForce;
+        CasterBase3_CasterRoll3->AngularSpring = CasterRollAngularSpring;
+        CasterBase3_CasterRoll3->AngularDamper = CasterRollAngularDamper;
         CasterBase3_CasterRoll3->AngularVelMax = FVector(3600, 0, 0);
         
         CasterRoll3->SetupAttachment(CasterBase3_CasterRoll3);
@@ -265,6 +277,8 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         Base_CasterBase4->LinearDOF = 0;
         Base_CasterBase4->RotationalDOF = 1;
         Base_CasterBase4->AngularForceLimit = MaxForce;
+        Base_CasterBase4->AngularSpring = CasterBaseAngularSpring;
+        Base_CasterBase4->AngularDamper = CasterBaseAngularDamper;
         Base_CasterBase4->AngularVelMax = FVector(3600, 0,0);
         
         CasterBase4->SetupAttachment(Base_CasterBase4);
@@ -276,6 +290,8 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         CasterBase4_CasterRoll4->LinearDOF = 0;
         CasterBase4_CasterRoll4->RotationalDOF = 1;
         CasterBase4_CasterRoll4->AngularForceLimit = MaxForce;
+        CasterBase4_CasterRoll4->AngularSpring = CasterRollAngularSpring;
+        CasterBase4_CasterRoll4->AngularDamper = CasterRollAngularDamper;
         CasterBase4_CasterRoll4->AngularVelMax = FVector(3600, 0, 0);
         
         CasterRoll4->SetupAttachment(CasterBase4_CasterRoll4);
@@ -283,13 +299,13 @@ bool ACLFTiago::SetupConstraintsAndPhysics()
         CasterRoll4->SetRelativeRotation(FRotator(0,0,0));
 
         Base_TorsoLift->SetRelativeLocation(FVector(-6.2, 0, 88.85));
-        Base_TorsoLift->SetRelativeRotation(FRotator(90,0,0));
+        Base_TorsoLift->SetRelativeRotation(FRotator(-90,0,180));
         Base_TorsoLift->LinearDOF = 1;
         Base_TorsoLift->RotationalDOF = 0;
 
         TorsoLiftWithArm->SetupAttachment(Base_TorsoLift);
         TorsoLiftWithArm->SetRelativeLocation(FVector(0,0,0));
-        TorsoLiftWithArm->SetRelativeRotation(FRotator(-90, 0, 0));
+        TorsoLiftWithArm->SetRelativeRotation(FRotator(-90, 0, 180));
 
         TorsoLift_HeadBase->SetRelativeLocation(FVector(18.2, 0, 0));
         TorsoLift_HeadBase->SetRelativeRotation(FRotator(90, 45, -45));

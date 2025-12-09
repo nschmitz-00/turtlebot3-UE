@@ -155,6 +155,18 @@ protected:
     float MaxForce = 1000.f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float CasterBaseAngularSpring = 10.f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float CasterBaseAngularDamper = 1.f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float CasterRollAngularSpring = 100.f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float CasterRollAngularDamper = 10.f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UMaterial* BodyMaterial = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
