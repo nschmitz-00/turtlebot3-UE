@@ -38,6 +38,24 @@ protected:
     URRPhysicsJointComponent* CasterBase1_CasterRoll1 = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Base_CasterBase2 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* CasterBase2_CasterRoll2 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Base_CasterBase3 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* CasterBase3_CasterRoll3 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Base_CasterBase4 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* CasterBase4_CasterRoll4 = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URRPhysicsJointComponent* TorsoLift_HeadBase = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
