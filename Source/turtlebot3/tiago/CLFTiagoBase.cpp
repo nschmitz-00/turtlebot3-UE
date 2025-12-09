@@ -42,14 +42,14 @@ bool ACLFTiagoBase::SetupBody()
     WheelRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WheelRight"));
 
     //Caster
-    // CasterBase1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase1"));
-    // CasterRoll1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll1"));
-    // CasterBase2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase2"));
-    // CasterRoll2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll2"));
-    // CasterBase3 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase3"));
-    // CasterRoll3 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll3"));
-    // CasterBase4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase4"));
-    // CasterRoll4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll4"));
+    CasterBase1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase1"));
+    CasterRoll1 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll1"));
+    CasterBase2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase2"));
+    CasterRoll2 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll2"));
+    CasterBase3 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase3"));
+    CasterRoll3 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll3"));
+    CasterBase4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterBase4"));
+    CasterRoll4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CasterRoll4"));
 
     // Torso
     TorsoFix = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TorsoFix"));
@@ -116,14 +116,14 @@ bool ACLFTiagoBase::SetupConstraintsAndPhysics()
         WheelLeft->SetSimulatePhysics(true);
         WheelRight->SetSimulatePhysics(true);
         //Caster
-        // CasterBase1->SetSimulatePhysics(true);
-        // CasterRoll1->SetSimulatePhysics(true);
-        // CasterBase2->SetSimulatePhysics(true);
-        // CasterRoll2->SetSimulatePhysics(true);
-        // CasterBase3->SetSimulatePhysics(true);
-        // CasterRoll3->SetSimulatePhysics(true);
-        // CasterBase4->SetSimulatePhysics(true);
-        // CasterRoll4->SetSimulatePhysics(true);
+        CasterBase1->SetSimulatePhysics(true);
+        CasterRoll1->SetSimulatePhysics(true);
+        CasterBase2->SetSimulatePhysics(true);
+        CasterRoll2->SetSimulatePhysics(true);
+        CasterBase3->SetSimulatePhysics(true);
+        CasterRoll3->SetSimulatePhysics(true);
+        CasterBase4->SetSimulatePhysics(true);
+        CasterRoll4->SetSimulatePhysics(true);
         //Torso
         TorsoFix->SetSimulatePhysics(true);
         TorsoInnerBox->SetSimulatePhysics(true);
