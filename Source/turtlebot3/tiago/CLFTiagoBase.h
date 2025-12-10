@@ -85,6 +85,9 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UStaticMeshComponent* Arm6 = nullptr;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* ArmTool = nullptr;
+
     // UPROPERTY(EditAnywhere, BlueprintReadWrite)
     // UStaticMeshComponent* GripperLink = nullptr;
     //

@@ -79,6 +79,9 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URRPhysicsJointComponent* Arm5_Arm6 = nullptr;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Arm6_ArmTool = nullptr;
+
     // UPROPERTY(EditAnywhere, BlueprintReadWrite)
     // URRPhysicsJointComponent* Arm6_GripperLink = nullptr;
     //

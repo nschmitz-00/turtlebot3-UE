@@ -67,6 +67,7 @@ bool ACLFTiagoBase::SetupBody()
     Arm4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm4"));
     Arm5 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm5"));
     Arm6 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Arm6"));
+    ArmTool = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArmTool"));
     
     // Gripper
     // GripperLink = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GripperLink"));
@@ -141,6 +142,7 @@ bool ACLFTiagoBase::SetupConstraintsAndPhysics()
         Arm4->SetSimulatePhysics(true);
         Arm5->SetSimulatePhysics(true);
         Arm6->SetSimulatePhysics(true);
+        ArmTool->SetSimulatePhysics(true);
         //Gripper
         // GripperLink->SetSimulatePhysics(true);
         // GripperLeftFingerLink->SetSimulatePhysics(true);
