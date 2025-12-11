@@ -8,9 +8,10 @@ public class turtlebot3EditorTarget : TargetRules
 	public turtlebot3EditorTarget( TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-		DefaultBuildSettings = BuildSettingsVersion.V2;
+		DefaultBuildSettings = BuildSettingsVersion.V5;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 		ExtraModuleNames.AddRange( new string[] { "turtlebot3" } );
-		//CppStandard = CppStandardVersion.Cpp20;
+		bOverrideBuildEnvironment = true;
+		CppStandard = CppStandardVersion.Default;
 	}
 }
