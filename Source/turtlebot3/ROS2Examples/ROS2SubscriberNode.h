@@ -3,7 +3,7 @@
 #pragma once
 // UE
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+
 
 // rclUE
 #include "ROS2Subscriber.h"
@@ -13,12 +13,12 @@
 #include "ROS2SubscriberNode.generated.h"
 
 UCLASS()
-class TURTLEBOT3_API AROS2SubscriberNode : public AActor
+class TURTLEBOT3_API UROS2SubscriberNode : public UActorComponent
 {
     GENERATED_BODY()
 
 public:
-    AROS2SubscriberNode();
+    UROS2SubscriberNode();
 
     virtual void BeginPlay() override;
 

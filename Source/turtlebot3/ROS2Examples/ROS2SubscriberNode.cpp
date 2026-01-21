@@ -5,7 +5,7 @@
 // Turtlebot3_UE
 #include "turtlebot3/Turtlebot3.h"
 
-AROS2SubscriberNode::AROS2SubscriberNode()
+UROS2SubscriberNode::UROS2SubscriberNode()
 {
     Node = CreateDefaultSubobject<UROS2NodeComponent>(TEXT("ROS2NodeComponent"));
 
@@ -14,15 +14,15 @@ AROS2SubscriberNode::AROS2SubscriberNode()
     Node->Namespace = TEXT("cpp");
 }
 
-void AROS2SubscriberNode::BeginPlay()
+void UROS2SubscriberNode::BeginPlay()
 {
     Super::BeginPlay();
     Node->Init();
 
-    ROS2_CREATE_SUBSCRIBER(Node, this, TopicName, UROS2StrMsg::StaticClass(), &AROS2SubscriberNode::MsgCallback);
+    ROS2_CREATE_SUBSCRIBER(Node, this, TopicName, UROS2StrMsg::StaticClass(), &UROS2SubscriberNode::MsgCallback);
 }
 
-void AROS2SubscriberNode::MsgCallback(const UROS2GenericMsg* InMsg)
+void UROS2SubscriberNode::MsgCallback(const UROS2GenericMsg* InMsg)
 {
     const UROS2StrMsg* stringMsg = Cast<UROS2StrMsg>(InMsg);
     if (stringMsg)

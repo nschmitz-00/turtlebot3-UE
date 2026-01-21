@@ -1,30 +1,29 @@
 #pragma once
 
-// UE imports
 #include "CoreMinimal.h"
 #include "PhysicsEngine/PhysicsConstraintComponent.h"
 
-// RSP imports
 #include "Robots/RRBaseRobot.h"
 #include "Sensors/RR2DLidarComponent.h"
 #include "Drives/RRDifferentialDriveComponent.h"
 #include "Drives/RRPhysicsJointComponent.h"
 #include "turtlebot3/ROS2Nodes/ROS2AudioNode.h"
+#include "../Tools/MovingSoundComponent.h"
+#include "TiagoKinematicROS2Interface.h"
+#include "Drives/RRKinematicJointComponent.h"
 
-#include "CLFTiagoROS2Interface.h"
+#include "TiagoBaseKinematic.generated.h"
 
-#include "TiagoBase.generated.h"
-
-DECLARE_LOG_CATEGORY_EXTERN(LogTiago, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogTiagoKinematic, Log, All);
 
 UCLASS()
 
-class RAPYUTASIMULATIONPLUGINS_API ATiagoBase : public ARRBaseRobot
+class ATiagoBaseKinematic : public ARRBaseRobot
 {
     GENERATED_BODY()
     
 public:
-    ATiagoBase(const FObjectInitializer& ObjectInitializer);
+    ATiagoBaseKinematic(const FObjectInitializer& ObjectInitializer);
 
 protected:
     virtual void PostInitializeComponents() override;
@@ -33,7 +32,6 @@ protected:
     virtual bool SetupBody();
 
     //Meshes
-    
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UStaticMeshComponent* Base = nullptr;
 
@@ -48,6 +46,15 @@ protected:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UStaticMeshComponent* WheelRight = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* SuspensionLeftDummy = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* SuspensionRightDummy = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMeshComponent* BaseFootprintDummy = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UStaticMeshComponent* AntennaLeft = nullptr;
@@ -87,7 +94,7 @@ protected:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UStaticMeshComponent* SonarRight = nullptr;
-    
+
     //Functional Components
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URR2DLidarComponent* LidarComponent = nullptr;
@@ -95,34 +102,19 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UROS2AudioNode* AudioNode = nullptr;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UMovingSoundComponent* MovingSoundComponent = nullptr;
+
     //Constraints
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UPhysicsConstraintComponent* Base_LidarSensor = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_BaseRing = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_AntennaLeft = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_AntennaRight = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_SonarLeft = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_SonarCenter = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UPhysicsConstraintComponent* Base_SonarRight = nullptr;
     
     //Joints
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    URRPhysicsJointComponent* Base_WheelLeft = nullptr;
+    URRPhysicsJointComponent* SuspensionLeft_WheelLeft = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    URRPhysicsJointComponent* Base_WheelRight = nullptr;
+    URRPhysicsJointComponent* SuspensionRight_WheelRight = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URRPhysicsJointComponent* Base_CasterBaseBackLeft = nullptr;
@@ -148,6 +140,15 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URRPhysicsJointComponent* CasterBaseFrontRight_CasterRollFrontRight = nullptr;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Base_SuspensionLeft = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRPhysicsJointComponent* Base_SuspensionRight = nullptr;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    URRKinematicJointComponent* Base_Footprint = nullptr;
+
     //Variables
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float MaxForce = 1000.f;
@@ -164,18 +165,19 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float CasterRollAngularDamper = 10.f;
 
-    UPROPERTY(VisibleAnywhere)
-    uint8 bBodyComponentsCreated : 1;
-
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float WheelRadius = 19.5f;
+    float WheelRadius = 9.85f;
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float WheelSeparationHalf = 20.22f;
+
+    UPROPERTY(VisibleAnywhere)
+    uint8 bBodyComponentsCreated : 1;
 
     UFUNCTION()
     virtual bool SetupConstraintsAndPhysics();
 
     UFUNCTION()
     virtual void SetupWheelDrives();
+    
 };

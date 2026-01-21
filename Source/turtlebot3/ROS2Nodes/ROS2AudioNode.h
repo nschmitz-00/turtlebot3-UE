@@ -3,6 +3,7 @@
 // UE
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/AudioComponent.h"
 
 // rclUE
 #include <ROS2Node.h>
@@ -16,8 +17,8 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(AudioNode, Log, All);
 
-UCLASS()
-class TURTLEBOT3_API UROS2AudioNode : public USceneComponent
+UCLASS(ClassGroup = (Custom), Blueprintable, BlueprintType, meta = (BlueprintSpawnableComponent))
+class TURTLEBOT3_API UROS2AudioNode : public UAudioComponent
 {
     GENERATED_BODY()
 
@@ -40,9 +41,6 @@ public:
     
     UFUNCTION()
     void SrvCallback(UROS2GenericSrv* InService);
-    
-    UPROPERTY()
-    UAudioComponent* AudioComponent;
 
     UPROPERTY()
     URuntimeAudioImporterLibrary* AudioImporterLib;

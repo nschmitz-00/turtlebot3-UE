@@ -1,13 +1,12 @@
-#include "TiagoBase.h"
+#include "TiagoBaseKinematic.h"
 
+#include "turtlebot3/tiago/Tools/MovingSoundComponent.h"
 
+DEFINE_LOG_CATEGORY(LogTiagoKinematic);
 
-DEFINE_LOG_CATEGORY(LogTiago);
-
-ATiagoBase::ATiagoBase(const FObjectInitializer& ObjectInitializer)
-    : Super(ObjectInitializer)
+ATiagoBaseKinematic::ATiagoBaseKinematic(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-    ROS2InterfaceClass = UCLFTiagoROS2Interface::StaticClass();
+    ROS2InterfaceClass = UTiagoKinematicROS2Interface::StaticClass();
     VehicleMoveComponentClass = URRDifferentialDriveComponent::StaticClass();
     PrimaryActorTick.bCanEverTick = true;
     bBodyComponentsCreated = false;
@@ -15,14 +14,14 @@ ATiagoBase::ATiagoBase(const FObjectInitializer& ObjectInitializer)
     SetupBody();
     SetupConstraintsAndPhysics();
     UE_LOG_WITH_INFO_SHORT(
-        LogTiago,
+        LogTiagoKinematic,
         Warning,
         TEXT("%d, %d"),
         Base_LidarSensor == nullptr,
         !Base_LidarSensor->IsAttachedTo(LidarSensor));
 }
 
-bool ATiagoBase::SetupBody()
+bool ATiagoBaseKinematic::SetupBody()
 {
     if (bBodyComponentsCreated)
     {
@@ -35,18 +34,12 @@ bool ATiagoBase::SetupBody()
     Base->BodyInstance.bLockXRotation = true;
     Base->BodyInstance.bLockYRotation = true;
 
-    AudioNode = CreateDefaultSubobject<UROS2AudioNode>(TEXT("AudioNode"));
-    AudioNode->SetupAttachment(Base);
-    
-    
     BaseRing = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseRing"));
 
     AntennaLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("AntennaLeft"));
     AntennaRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("AntennaRight"));
 
     LidarSensor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LidarSensor"));
-    LidarComponent = CreateDefaultSubobject<URR2DLidarComponent>(TEXT("LidarComp"));
-    LidarComponent->SetupAttachment(LidarSensor);
 
     WheelLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WheelLeft"));
     WheelRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WheelRight"));
@@ -64,21 +57,36 @@ bool ATiagoBase::SetupBody()
     SonarCenter = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SonarCenter"));
     SonarRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SonarRight"));
 
+    //Dummys
+    BaseFootprintDummy = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseFootprintDummy"));
+    SuspensionLeftDummy = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SuspensionLeftDummy"));
+    SuspensionRightDummy = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SuspensionRightDummy"));
+    
+    //Functional components
+    AudioNode = CreateDefaultSubobject<UROS2AudioNode>(TEXT("AudioNode"));
+    AudioNode->SetupAttachment(Base);
+
+    LidarComponent = CreateDefaultSubobject<URR2DLidarComponent>(TEXT("LidarComp"));
+    LidarComponent->SetupAttachment(LidarSensor);
+
+    MovingSoundComponent = CreateDefaultSubobject<UMovingSoundComponent>(TEXT("MovingSoundComp"));
+    MovingSoundComponent->SetupAttachment(Base);
+
     //Constraints
     Base_LidarSensor = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_LidarSensor"));
-    Base_BaseRing = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_BaseRing"));
-    Base_AntennaLeft = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_AntennaLeft"));
-    Base_AntennaRight = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_AntennaRight"));
-    Base_SonarLeft = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_SonarLeft"));
-    Base_SonarCenter = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_SonarCenter"));
-    Base_SonarRight = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_SonarRight"));
 
     //Joints
-    Base_WheelLeft = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_WheelLeft"));
-    Base_WheelLeft->SetupAttachment(Base);
+    Base_SuspensionLeft = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_SuspensionLeft"));
+    Base_SuspensionLeft->SetupAttachment(Base);
 
-    Base_WheelRight = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_WheelRight"));
-    Base_WheelRight->SetupAttachment(Base);
+    Base_SuspensionRight = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_SuspensionRight"));
+    Base_SuspensionRight->SetupAttachment(Base);
+    
+    SuspensionLeft_WheelLeft = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("SuspensionLeft_WheelLeft"));
+    SuspensionLeft_WheelLeft->SetupAttachment(SuspensionLeftDummy);
+
+    SuspensionRight_WheelRight = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("SuspensionRight_WheelRight"));
+    SuspensionRight_WheelRight->SetupAttachment(SuspensionRightDummy);
 
     Base_CasterBaseBackLeft = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_CasterBaseBackLeft"));
     Base_CasterBaseBackLeft->SetupAttachment(Base);
@@ -91,6 +99,9 @@ bool ATiagoBase::SetupBody()
 
     Base_CasterBaseFrontRight = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_CasterBaseFrontRight"));
     Base_CasterBaseFrontRight->SetupAttachment(Base);
+
+    Base_Footprint = CreateDefaultSubobject<URRKinematicJointComponent>(TEXT("Base_Footprint"));
+    Base_Footprint->SetupAttachment(Base);
 
     CasterBaseBackLeft_CasterRollBackLeft = CreateDefaultSubobject<URRPhysicsJointComponent>(
         TEXT("CasterBaseBackLeft_CasterRollBackLeft"));
@@ -110,8 +121,9 @@ bool ATiagoBase::SetupBody()
 
     //Links
     AddLink(TEXT("base_link"), Base);
-    AddLink(TEXT("suspension_right_link"), Base);
-    AddLink(TEXT("suspension_left_link"), Base);
+    AddLink(TEXT("suspension_right_link"), SuspensionRightDummy);
+    AddLink(TEXT("suspension_left_link"), SuspensionLeftDummy);
+    AddLink(TEXT("base_footprint"), BaseFootprintDummy);
     AddLink(TEXT("wheel_left_link"), WheelLeft);
     AddLink(TEXT("wheel_right_link"), WheelRight);
     AddLink(TEXT("caster_back_left_1_link"), CasterBaseBackLeft);
@@ -122,40 +134,47 @@ bool ATiagoBase::SetupBody()
     AddLink(TEXT("caster_front_left_2_link"), CasterRollFrontLeft);
     AddLink(TEXT("caster_front_right_1_link"), CasterBaseFrontRight);
     AddLink(TEXT("caster_front_right_2_link"), CasterRollFrontRight);
+    AddLink(TEXT("base_antenna_left_link"), AntennaLeft);
+    AddLink(TEXT("base_antenna_right_link"), AntennaRight);
+    AddLink(TEXT("base_laser_link"), LidarSensor);
+    AddLink(TEXT("base_sonar_01_link"), SonarLeft);
+    AddLink(TEXT("base_sonar_02_link"), SonarCenter);
+    AddLink(TEXT("base_sonar_03_link"), SonarRight);
 
     bBodyComponentsCreated = true;
 
-    return true;
+    return true;    
 }
 
-void ATiagoBase::PostInitializeComponents()
+void ATiagoBaseKinematic::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
     SetupWheelDrives();
 }
 
-void ATiagoBase::SetupWheelDrives()
+void ATiagoBaseKinematic::SetupWheelDrives()
 {
     if (bBodyComponentsCreated && IsValid(MovementComponent))
     {
         URRDifferentialDriveComponent* diffDriveComponent = CastChecked<URRDifferentialDriveComponent>(MovementComponent);
-        diffDriveComponent->SetWheels(Base_WheelLeft, Base_WheelRight);
+        diffDriveComponent->SetWheels(SuspensionLeft_WheelLeft, SuspensionRight_WheelRight);
         diffDriveComponent->WheelRadius = WheelRadius;
         diffDriveComponent->WheelSeparationHalf = WheelSeparationHalf;
         diffDriveComponent->SetPerimeter();
     }
 }
 
-bool ATiagoBase::SetupConstraintsAndPhysics()
+bool ATiagoBaseKinematic::SetupConstraintsAndPhysics()
 {
     if (bBodyComponentsCreated)
     {
         // ======================== Physic settings ====================
         
         Base->SetSimulatePhysics(true);
-        Base->BodyInstance.SetMassOverride(100.0);
-        Base->SetCenterOfMass(FVector(0,0, -150));
-        BaseRing->SetSimulatePhysics(true);
+        Base->BodyInstance.SetMassOverride(100.0); //Seems like this doesn't work for some reason
+        Base->SetCenterOfMass(FVector(0,0, -150)); // Same here...
+        SuspensionRightDummy->SetSimulatePhysics(true);
+        SuspensionLeftDummy->SetSimulatePhysics(true);
         LidarSensor->SetSimulatePhysics(true);
         WheelLeft->SetSimulatePhysics(true);
         WheelLeft->BodyInstance.SetMassOverride(20.0);
@@ -177,11 +196,6 @@ bool ATiagoBase::SetupConstraintsAndPhysics()
         CasterBaseFrontRight->BodyInstance.SetMassOverride(1.0);
         CasterRollFrontRight->SetSimulatePhysics(true);
         CasterRollFrontRight->BodyInstance.SetMassOverride(1.0);
-        AntennaLeft->SetSimulatePhysics(true);
-        AntennaRight->SetSimulatePhysics(true);
-        SonarLeft->SetSimulatePhysics(true);
-        SonarCenter->SetSimulatePhysics(true);
-        SonarRight->SetSimulatePhysics(true);
 
         // =================== ROS Component Settings ==================
 
@@ -210,100 +224,34 @@ bool ATiagoBase::SetupConstraintsAndPhysics()
 
         Base_LidarSensor->SetupAttachment(Base);
 
-        //Base ring
-        Base_BaseRing->ComponentName1.ComponentName = TEXT("Base");
-        Base_BaseRing->ComponentName2.ComponentName = TEXT("BaseRing");
-        Base_BaseRing->SetRelativeLocation(FVector(0, 0, 4));
-        Base_BaseRing->SetDisableCollision(true);
-        Base_BaseRing->SetAngularSwing1Limit(ACM_Locked, 0);
-        Base_BaseRing->SetAngularSwing2Limit(ACM_Locked, 0);
-        Base_BaseRing->SetAngularTwistLimit(ACM_Locked, 0);
-        Base_BaseRing->SetLinearXLimit(LCM_Locked, 0);
-        Base_BaseRing->SetLinearYLimit(LCM_Locked, 0);
-        Base_BaseRing->SetLinearZLimit(LCM_Locked, 0);
+        // ======================== Simple Attachments =================
 
-        BaseRing->SetupAttachment(Base_BaseRing);
+        BaseRing->SetRelativeLocation(FVector(0, 0, 4));
+        BaseRing->SetupAttachment(Base);
 
-        Base_BaseRing->SetupAttachment(Base);
+        AntennaLeft->SetRelativeLocation(FVector(-20.1, -10.62, 19.5));
+        AntennaLeft->SetupAttachment(Base);
 
-        //Antennas
-        Base_AntennaLeft->ComponentName1.ComponentName = TEXT("Base");
-        Base_AntennaLeft->ComponentName2.ComponentName = TEXT("AntennaLeft");
-        Base_AntennaLeft->SetRelativeLocation(FVector(-20.1, -10.62, 19.5));
-        Base_AntennaLeft->SetDisableCollision(true);
-        Base_AntennaLeft->SetAngularSwing1Limit(ACM_Locked, 0);
-        Base_AntennaLeft->SetAngularSwing2Limit(ACM_Locked, 0);
-        Base_AntennaLeft->SetAngularTwistLimit(ACM_Locked, 0);
-        Base_AntennaLeft->SetLinearXLimit(LCM_Locked, 0);
-        Base_AntennaLeft->SetLinearYLimit(LCM_Locked, 0);
-        Base_AntennaLeft->SetLinearZLimit(LCM_Locked, 0);
+        AntennaRight->SetRelativeLocation(FVector(-20.1, 10.62, 19.5));
+        AntennaRight->SetupAttachment(Base);
 
-        Base_AntennaRight->ComponentName1.ComponentName = TEXT("Base");
-        Base_AntennaRight->ComponentName2.ComponentName = TEXT("AntennaRight");
-        Base_AntennaRight->SetRelativeLocation(FVector(-20.1, 10.62, 19.5));
-        Base_AntennaRight->SetDisableCollision(true);
-        Base_AntennaRight->SetAngularSwing1Limit(ACM_Locked, 0);
-        Base_AntennaRight->SetAngularSwing2Limit(ACM_Locked, 0);
-        Base_AntennaRight->SetAngularTwistLimit(ACM_Locked, 0);
-        Base_AntennaRight->SetLinearXLimit(LCM_Locked, 0);
-        Base_AntennaRight->SetLinearYLimit(LCM_Locked, 0);
-        Base_AntennaRight->SetLinearZLimit(LCM_Locked, 0);
+        SonarLeft->SetRelativeLocation(FVector(-18.3, -18.3, 17.3));
+        SonarLeft->SetRelativeRotation(FRotator(0, 45, 0));
+        SonarLeft->SetupAttachment(Base);
 
-        AntennaLeft->SetupAttachment(Base_AntennaLeft);
-        AntennaRight->SetupAttachment(Base_AntennaRight);
+        SonarCenter->SetRelativeLocation(FVector(-25.9, 0, 17.3));
+        SonarCenter->SetupAttachment(Base);
 
-        Base_AntennaLeft->SetupAttachment(Base);
-        Base_AntennaRight->SetupAttachment(Base);
-
-        //Sonar sensors
-        Base_SonarLeft->ComponentName1.ComponentName = TEXT("Base");
-        Base_SonarLeft->ComponentName2.ComponentName = TEXT("SonarLeft");
-        Base_SonarLeft->SetRelativeLocation(FVector(-18.3, -18.3, 17.3));
-        Base_SonarLeft->SetRelativeRotation(FRotator(0,45,0));
-        Base_SonarLeft->SetDisableCollision(true);
-        Base_SonarLeft->SetAngularSwing1Limit(ACM_Locked, 0);
-        Base_SonarLeft->SetAngularSwing2Limit(ACM_Locked, 0);
-        Base_SonarLeft->SetAngularTwistLimit(ACM_Locked, 0);
-        Base_SonarLeft->SetLinearXLimit(LCM_Locked, 0);
-        Base_SonarLeft->SetLinearYLimit(LCM_Locked, 0);
-        Base_SonarLeft->SetLinearZLimit(LCM_Locked, 0);
-
-        Base_SonarCenter->ComponentName1.ComponentName = TEXT("Base");
-        Base_SonarCenter->ComponentName2.ComponentName = TEXT("SonarCenter");
-        Base_SonarCenter->SetRelativeLocation(FVector(-25.9, 0.0, 17.3));
-        Base_SonarCenter->SetRelativeRotation(FRotator(0,0,0));
-        Base_SonarCenter->SetDisableCollision(true);
-        Base_SonarCenter->SetAngularSwing1Limit(ACM_Locked, 0);
-        Base_SonarCenter->SetAngularSwing2Limit(ACM_Locked, 0);
-        Base_SonarCenter->SetAngularTwistLimit(ACM_Locked, 0);
-        Base_SonarCenter->SetLinearXLimit(LCM_Locked, 0);
-        Base_SonarCenter->SetLinearYLimit(LCM_Locked, 0);
-        Base_SonarCenter->SetLinearZLimit(LCM_Locked, 0);
-
-        Base_SonarRight->ComponentName1.ComponentName = TEXT("Base");
-        Base_SonarRight->ComponentName2.ComponentName = TEXT("SonarRight");
-        Base_SonarRight->SetRelativeLocation(FVector(-18.3, 18.3, 17.3));
-        Base_SonarRight->SetRelativeRotation(FRotator(0,-45,0));
-        Base_SonarRight->SetDisableCollision(true);
-        Base_SonarRight->SetAngularSwing1Limit(ACM_Locked, 0);
-        Base_SonarRight->SetAngularSwing2Limit(ACM_Locked, 0);
-        Base_SonarRight->SetAngularTwistLimit(ACM_Locked, 0);
-        Base_SonarRight->SetLinearXLimit(LCM_Locked, 0);
-        Base_SonarRight->SetLinearYLimit(LCM_Locked, 0);
-        Base_SonarRight->SetLinearZLimit(LCM_Locked, 0);
-
-        SonarLeft->SetupAttachment(Base_SonarLeft);
-        SonarCenter->SetupAttachment(Base_SonarCenter);
-        SonarRight->SetupAttachment(Base_SonarRight);
-
-        Base_SonarLeft->SetupAttachment(Base);
-        Base_SonarCenter->SetupAttachment(Base);
-        Base_SonarRight->SetupAttachment(Base);
+        SonarRight->SetRelativeLocation(FVector(-18.3, 18.3, 17.3));
+        SonarRight->SetRelativeRotation(FRotator(0, -45, 0));
+        SonarRight->SetupAttachment(Base);
 
         // ====================== Joints ==============================
 
-        AddJoint(TEXT("base_link"), TEXT("wheel_right_link"), TEXT("wheel_right_joint"), Base_WheelRight);
-        AddJoint(TEXT("base_link"), TEXT("wheel_left_link"), TEXT("wheel_left_joint"), Base_WheelLeft);
+        AddJoint(TEXT("suspension_right_link"), TEXT("wheel_right_link"), TEXT("wheel_right_joint"), SuspensionRight_WheelRight);
+        AddJoint(TEXT("suspension_left_link"), TEXT("wheel_left_link"), TEXT("wheel_left_joint"), SuspensionLeft_WheelLeft);
+        AddJoint(TEXT("base_link"), TEXT("suspension_right_link"), TEXT("suspension_right_joint"), Base_SuspensionRight);
+        AddJoint(TEXT("base_link"), TEXT("suspension_left_link"), TEXT("suspension_left_joint"), Base_SuspensionLeft);
         AddJoint(TEXT("base_link"), TEXT("caster_back_left_1_link"), TEXT("caster_back_left_1_joint"), Base_CasterBaseBackLeft);
         AddJoint(TEXT("base_link"), TEXT("caster_back_right_1_link"), TEXT("caster_back_right_1_joint"), Base_CasterBaseBackRight);
         AddJoint(TEXT("base_link"), TEXT("caster_front_left_1_link"), TEXT("caster_front_left_1_joint"), Base_CasterBaseFrontLeft);
@@ -312,28 +260,47 @@ bool ATiagoBase::SetupConstraintsAndPhysics()
         AddJoint(TEXT("caster_back_right_1_link"), TEXT("caster_back_right_2_link"), TEXT("caster_back_right_2_joint"), CasterBaseBackRight_CasterRollBackRight);
         AddJoint(TEXT("caster_front_left_1_link"), TEXT("caster_front_left_2_link"), TEXT("caster_front_left_2_joint"), CasterBaseFrontLeft_CasterRollFrontLeft);
         AddJoint(TEXT("caster_front_right_1_link"), TEXT("caster_front_right_2_link"), TEXT("caster_front_right_2_joint"), CasterBaseFrontRight_CasterRollFrontRight);
+        AddJoint(TEXT("base_footprint"), TEXT("base_link"), TEXT("base_footprint_joint"), Base_Footprint);
 
+        Base_Footprint->LinearDOF = 0;
+        Base_Footprint->RotationalDOF = 0;
+        
+        BaseFootprintDummy->SetupAttachment(Base_Footprint);
+        
         //Wheels
-        Base_WheelLeft->SetRelativeLocation(FVector(0, -20.22, 0));
-        Base_WheelLeft->SetRelativeRotation(FRotator(0, -90, 0));
-        Base_WheelLeft->LinearDOF = 0;
-        Base_WheelLeft->RotationalDOF = 1;
-        Base_WheelLeft->AngularForceLimit = MaxForce;
-        Base_WheelLeft->AngularVelMax = FVector(3600, 0, 0);
+        Base_SuspensionLeft->SetRelativeLocation(FVector(0, 0, 0));
+        Base_SuspensionLeft->SetRelativeRotation(FRotator(0, 0, 0));
+        Base_SuspensionLeft->LinearDOF = 0;
+        Base_SuspensionLeft->RotationalDOF = 0;
 
-        Base_WheelRight->SetRelativeLocation(FVector(0, 20.22, 0));
-        Base_WheelRight->SetRelativeRotation(FRotator(0, 90, 0));
-        Base_WheelRight->LinearDOF = 0;
-        Base_WheelRight->RotationalDOF = 1;
-        Base_WheelRight->AngularForceLimit = MaxForce;
-        Base_WheelRight->AngularVelMax = FVector(3600, 0, 0);
+        Base_SuspensionRight->SetRelativeLocation(FVector(0, 0, 0));
+        Base_SuspensionRight->SetRelativeRotation(FRotator(0, 0, 0));
+        Base_SuspensionRight->LinearDOF = 0;
+        Base_SuspensionRight->RotationalDOF = 0;
+        
+        SuspensionLeft_WheelLeft->SetRelativeLocation(FVector(0, -20.22, 0));
+        SuspensionLeft_WheelLeft->SetRelativeRotation(FRotator(0, -90, 0));
+        SuspensionLeft_WheelLeft->LinearDOF = 0;
+        SuspensionLeft_WheelLeft->RotationalDOF = 1;
+        SuspensionLeft_WheelLeft->AngularForceLimit = MaxForce;
+        SuspensionLeft_WheelLeft->AngularVelMax = FVector(3600, 0, 0);
 
-        WheelLeft->SetupAttachment(Base_WheelLeft);
+        SuspensionRight_WheelRight->SetRelativeLocation(FVector(0, 20.22, 0));
+        SuspensionRight_WheelRight->SetRelativeRotation(FRotator(0, 90, 0));
+        SuspensionRight_WheelRight->LinearDOF = 0;
+        SuspensionRight_WheelRight->RotationalDOF = 1;
+        SuspensionRight_WheelRight->AngularForceLimit = MaxForce;
+        SuspensionRight_WheelRight->AngularVelMax = FVector(3600, 0, 0);
+
+        WheelLeft->SetupAttachment(SuspensionLeft_WheelLeft);
         WheelLeft->SetRelativeLocation(FVector(0, 0, 0));
         WheelLeft->SetRelativeRotation(FRotator(0, 180, 0));
-        WheelRight->SetupAttachment(Base_WheelRight);
+        WheelRight->SetupAttachment(SuspensionRight_WheelRight);
         WheelRight->SetRelativeLocation(FVector(0, 0, 0));
         WheelRight->SetRelativeRotation(FRotator(0, -180, 0));
+
+        SuspensionLeftDummy->SetupAttachment(Base_SuspensionLeft);
+        SuspensionRightDummy->SetupAttachment(Base_SuspensionRight);
 
         //Caster
         //Back Left
@@ -447,6 +414,10 @@ bool ATiagoBase::SetupConstraintsAndPhysics()
         return true;
         
     }
-    UE_LOG_WITH_INFO(LogTiago, Error, TEXT("Tiago not initialized - can't setup constraints!"));
+    UE_LOG_WITH_INFO(LogTiagoKinematic, Error, TEXT("Tiago not initialized - can't setup constraints!"));
     return false;
+    
 }
+
+
+

@@ -84,8 +84,8 @@ bool ATiagoArm::SetupConstraintsAndPhysics()
 
         Arm7_ArmTool->ComponentName1.ComponentName = TEXT("Arm7Dummy");
         Arm7_ArmTool->ComponentName2.ComponentName = TEXT("ArmTool");
-        Arm7_ArmTool->SetRelativeLocation(FVector(0,0,4.85));
-        Arm7_ArmTool->SetRelativeRotation(FQuat(0.5, 0.5, 0.5, -0.5));
+        Arm7_ArmTool->SetRelativeLocation(FVector(4.85,0,0));
+        Arm7_ArmTool->SetRelativeRotation(FRotator(0,90,180));
         Arm7_ArmTool->SetAngularSwing1Limit(ACM_Locked, 0);
         Arm7_ArmTool->SetAngularSwing2Limit(ACM_Locked, 0);
         Arm7_ArmTool->SetAngularTwistLimit(ACM_Locked, 0);
@@ -93,6 +93,7 @@ bool ATiagoArm::SetupConstraintsAndPhysics()
         Arm7_ArmTool->SetLinearYLimit(LCM_Locked, 0);
         Arm7_ArmTool->SetLinearZLimit(LCM_Locked, 0);
 
+        ArmTool->SetRelativeRotation(FRotator(0,0,90));
         ArmTool->SetupAttachment(Arm7_ArmTool);
         Arm7_ArmTool->SetupAttachment(Arm7Dummy);
 
@@ -184,8 +185,8 @@ bool ATiagoArm::SetupConstraintsAndPhysics()
         Arm6->SetRelativeLocation(FVector(0,0,0));
         Arm6->SetRelativeRotation(FRotator(0,-90,90));
 
-        Arm6_Arm7->SetRelativeLocation(FVector(0,0,1));
-        Arm6_Arm7->SetRelativeRotation(FQuat(0.5, 0.5, 0.5, 0.5));
+        Arm6_Arm7->SetRelativeLocation(FVector(1,0,0));
+        Arm6_Arm7->SetRelativeRotation(FRotator(0,0,-90));
         Arm6_Arm7->LinearDOF = 0;
         Arm6_Arm7->RotationalDOF = 1;
         Arm6_Arm7->AngularForceLimit = MaxForce;

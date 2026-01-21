@@ -1,9 +1,11 @@
 #include "ROS2AudioNode.h"
 
+#include "EngineUtils.h"
 #include "Kismet/GameplayStatics.h"
 
 #include "RuntimeAudioImporterLibrary.h"
 #include "Components/AudioComponent.h"
+#include "Core/RRROS2GameMode.h"
 
 #include "turtlebot3/Turtlebot3.h"
 
@@ -15,8 +17,6 @@ UROS2AudioNode::UROS2AudioNode()
 
     Node->Name = TEXT("audio_node");
     Node->Namespace = TEXT("ue_audio");
-    
-    AudioComponent = CreateDefaultSubobject<UAudioComponent>(FName("AudioComponent"));
 }
 
 
@@ -44,14 +44,19 @@ void UROS2AudioNode::BeginPlay()
     AudioImporterLib = URuntimeAudioImporterLibrary::CreateRuntimeAudioImporter();
     AudioImporterLib->OnResultNative.AddUObject(this, &UROS2AudioNode::OnAudioImporterResult);
 
-    AudioComponent->SetSound(StreamSoundWave);
+    this->SetSound(StreamSoundWave);
+
+    for (AActor* Actor : TActorRange<AActor>(GetWorld()))
+    {
+        UE_LOG_WITH_INFO_NAMED(AudioNode, Log, TEXT("[%s][ue][Actors] %s"), *SubscriptionTopicName, *Actor->GetActorNameOrLabel());
+    }
 }
 
 void UROS2AudioNode::SrvCallback(UROS2GenericSrv* InService)
 {
     UROS2TriggerSrv* PlaybackTriggerService = Cast<UROS2TriggerSrv>(InService);
     StreamSoundWave->SetStopSoundOnPlaybackFinish(true);
-    AudioComponent->Play();
+    this->Play();
     FROSTriggerRes res;
     res.bSuccess = StreamSoundWave->IsPlaybackFinished();
     PlaybackTriggerService->SetResponse(res);
