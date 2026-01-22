@@ -95,7 +95,7 @@ bool ATiagoGripperKinematic::SetupConstraintsAndPhysics()
         GripperLeftFingerLink_GripperFingerMountL->LinearDOF = 0;
         GripperLeftFingerLink_GripperFingerMountL->RotationalDOF = 1;
 
-        GripperRightFingerLink_GripperFingerMountR->SetRelativeLocation(FVector(-5, 0, -16.5));
+        GripperRightFingerLink_GripperFingerMountR->SetRelativeLocation(FVector(5, 0, -16.5));
         GripperRightFingerLink_GripperFingerMountR->SetRelativeRotation(FRotator(0,90,0));
         GripperRightFingerLink_GripperFingerMountR->LinearDOF = 0;
         GripperRightFingerLink_GripperFingerMountR->RotationalDOF = 1;
