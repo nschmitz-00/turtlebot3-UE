@@ -48,15 +48,6 @@ protected:
     UStaticMeshComponent* WheelRight = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* SuspensionLeftDummy = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* SuspensionRightDummy = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    UStaticMeshComponent* BaseFootprintDummy = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UStaticMeshComponent* AntennaLeft = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -111,10 +102,10 @@ protected:
     
     //Joints
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    URRPhysicsJointComponent* SuspensionLeft_WheelLeft = nullptr;
+    URRPhysicsJointComponent* Base_WheelLeft = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    URRPhysicsJointComponent* SuspensionRight_WheelRight = nullptr;
+    URRPhysicsJointComponent* Base_WheelRight = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URRPhysicsJointComponent* Base_CasterBaseBackLeft = nullptr;
@@ -141,13 +132,10 @@ protected:
     URRPhysicsJointComponent* CasterBaseFrontRight_CasterRollFrontRight = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    URRPhysicsJointComponent* Base_SuspensionLeft = nullptr;
+    URRKinematicJointComponent* Base_SuspensionLeft = nullptr;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    URRPhysicsJointComponent* Base_SuspensionRight = nullptr;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    URRKinematicJointComponent* Base_Footprint = nullptr;
+    URRKinematicJointComponent* Base_SuspensionRight = nullptr;
 
     //Variables
     UPROPERTY(EditAnywhere, BlueprintReadWrite)

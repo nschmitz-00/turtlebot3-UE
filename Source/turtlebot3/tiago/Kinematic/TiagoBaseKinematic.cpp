@@ -56,11 +56,6 @@ bool ATiagoBaseKinematic::SetupBody()
     SonarLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SonarLeft"));
     SonarCenter = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SonarCenter"));
     SonarRight = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SonarRight"));
-
-    //Dummys
-    BaseFootprintDummy = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseFootprintDummy"));
-    SuspensionLeftDummy = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SuspensionLeftDummy"));
-    SuspensionRightDummy = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SuspensionRightDummy"));
     
     //Functional components
     AudioNode = CreateDefaultSubobject<UROS2AudioNode>(TEXT("AudioNode"));
@@ -76,17 +71,17 @@ bool ATiagoBaseKinematic::SetupBody()
     Base_LidarSensor = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("Base_LidarSensor"));
 
     //Joints
-    Base_SuspensionLeft = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_SuspensionLeft"));
+    Base_SuspensionLeft = CreateDefaultSubobject<URRKinematicJointComponent>(TEXT("Base_SuspensionLeft"));
     Base_SuspensionLeft->SetupAttachment(Base);
 
-    Base_SuspensionRight = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_SuspensionRight"));
+    Base_SuspensionRight = CreateDefaultSubobject<URRKinematicJointComponent>(TEXT("Base_SuspensionRight"));
     Base_SuspensionRight->SetupAttachment(Base);
     
-    SuspensionLeft_WheelLeft = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("SuspensionLeft_WheelLeft"));
-    SuspensionLeft_WheelLeft->SetupAttachment(SuspensionLeftDummy);
+    Base_WheelLeft = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("SuspensionLeft_WheelLeft"));
+    Base_WheelLeft->SetupAttachment(Base);
 
-    SuspensionRight_WheelRight = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("SuspensionRight_WheelRight"));
-    SuspensionRight_WheelRight->SetupAttachment(SuspensionRightDummy);
+    Base_WheelRight = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("SuspensionRight_WheelRight"));
+    Base_WheelRight->SetupAttachment(Base);
 
     Base_CasterBaseBackLeft = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_CasterBaseBackLeft"));
     Base_CasterBaseBackLeft->SetupAttachment(Base);
@@ -99,9 +94,6 @@ bool ATiagoBaseKinematic::SetupBody()
 
     Base_CasterBaseFrontRight = CreateDefaultSubobject<URRPhysicsJointComponent>(TEXT("Base_CasterBaseFrontRight"));
     Base_CasterBaseFrontRight->SetupAttachment(Base);
-
-    Base_Footprint = CreateDefaultSubobject<URRKinematicJointComponent>(TEXT("Base_Footprint"));
-    Base_Footprint->SetupAttachment(Base);
 
     CasterBaseBackLeft_CasterRollBackLeft = CreateDefaultSubobject<URRPhysicsJointComponent>(
         TEXT("CasterBaseBackLeft_CasterRollBackLeft"));
@@ -121,9 +113,8 @@ bool ATiagoBaseKinematic::SetupBody()
 
     //Links
     AddLink(TEXT("base_link"), Base);
-    AddLink(TEXT("suspension_right_link"), SuspensionRightDummy);
-    AddLink(TEXT("suspension_left_link"), SuspensionLeftDummy);
-    AddLink(TEXT("base_footprint"), BaseFootprintDummy);
+    AddLink(TEXT("suspension_right_link"), Base); //A little bit hacky
+    AddLink(TEXT("suspension_left_link"), Base);
     AddLink(TEXT("wheel_left_link"), WheelLeft);
     AddLink(TEXT("wheel_right_link"), WheelRight);
     AddLink(TEXT("caster_back_left_1_link"), CasterBaseBackLeft);
@@ -157,7 +148,7 @@ void ATiagoBaseKinematic::SetupWheelDrives()
     if (bBodyComponentsCreated && IsValid(MovementComponent))
     {
         URRDifferentialDriveComponent* diffDriveComponent = CastChecked<URRDifferentialDriveComponent>(MovementComponent);
-        diffDriveComponent->SetWheels(SuspensionLeft_WheelLeft, SuspensionRight_WheelRight);
+        diffDriveComponent->SetWheels(Base_WheelLeft, Base_WheelRight);
         diffDriveComponent->WheelRadius = WheelRadius;
         diffDriveComponent->WheelSeparationHalf = WheelSeparationHalf;
         diffDriveComponent->SetPerimeter();
@@ -173,8 +164,6 @@ bool ATiagoBaseKinematic::SetupConstraintsAndPhysics()
         Base->SetSimulatePhysics(true);
         Base->BodyInstance.SetMassOverride(100.0); //Seems like this doesn't work for some reason
         Base->SetCenterOfMass(FVector(0,0, -150)); // Same here...
-        SuspensionRightDummy->SetSimulatePhysics(true);
-        SuspensionLeftDummy->SetSimulatePhysics(true);
         LidarSensor->SetSimulatePhysics(true);
         WheelLeft->SetSimulatePhysics(true);
         WheelLeft->BodyInstance.SetMassOverride(20.0);
@@ -248,8 +237,8 @@ bool ATiagoBaseKinematic::SetupConstraintsAndPhysics()
 
         // ====================== Joints ==============================
 
-        AddJoint(TEXT("suspension_right_link"), TEXT("wheel_right_link"), TEXT("wheel_right_joint"), SuspensionRight_WheelRight);
-        AddJoint(TEXT("suspension_left_link"), TEXT("wheel_left_link"), TEXT("wheel_left_joint"), SuspensionLeft_WheelLeft);
+        AddJoint(TEXT("suspension_right_link"), TEXT("wheel_right_link"), TEXT("wheel_right_joint"), Base_WheelRight);
+        AddJoint(TEXT("suspension_left_link"), TEXT("wheel_left_link"), TEXT("wheel_left_joint"), Base_WheelLeft);
         AddJoint(TEXT("base_link"), TEXT("suspension_right_link"), TEXT("suspension_right_joint"), Base_SuspensionRight);
         AddJoint(TEXT("base_link"), TEXT("suspension_left_link"), TEXT("suspension_left_joint"), Base_SuspensionLeft);
         AddJoint(TEXT("base_link"), TEXT("caster_back_left_1_link"), TEXT("caster_back_left_1_joint"), Base_CasterBaseBackLeft);
@@ -260,12 +249,6 @@ bool ATiagoBaseKinematic::SetupConstraintsAndPhysics()
         AddJoint(TEXT("caster_back_right_1_link"), TEXT("caster_back_right_2_link"), TEXT("caster_back_right_2_joint"), CasterBaseBackRight_CasterRollBackRight);
         AddJoint(TEXT("caster_front_left_1_link"), TEXT("caster_front_left_2_link"), TEXT("caster_front_left_2_joint"), CasterBaseFrontLeft_CasterRollFrontLeft);
         AddJoint(TEXT("caster_front_right_1_link"), TEXT("caster_front_right_2_link"), TEXT("caster_front_right_2_joint"), CasterBaseFrontRight_CasterRollFrontRight);
-        AddJoint(TEXT("base_footprint"), TEXT("base_link"), TEXT("base_footprint_joint"), Base_Footprint);
-
-        Base_Footprint->LinearDOF = 0;
-        Base_Footprint->RotationalDOF = 0;
-        
-        BaseFootprintDummy->SetupAttachment(Base_Footprint);
         
         //Wheels
         Base_SuspensionLeft->SetRelativeLocation(FVector(0, 0, 0));
@@ -278,29 +261,26 @@ bool ATiagoBaseKinematic::SetupConstraintsAndPhysics()
         Base_SuspensionRight->LinearDOF = 0;
         Base_SuspensionRight->RotationalDOF = 0;
         
-        SuspensionLeft_WheelLeft->SetRelativeLocation(FVector(0, -20.22, 0));
-        SuspensionLeft_WheelLeft->SetRelativeRotation(FRotator(0, -90, 0));
-        SuspensionLeft_WheelLeft->LinearDOF = 0;
-        SuspensionLeft_WheelLeft->RotationalDOF = 1;
-        SuspensionLeft_WheelLeft->AngularForceLimit = MaxForce;
-        SuspensionLeft_WheelLeft->AngularVelMax = FVector(3600, 0, 0);
+        Base_WheelLeft->SetRelativeLocation(FVector(0, -20.22, 0));
+        Base_WheelLeft->SetRelativeRotation(FRotator(0, -90, 0));
+        Base_WheelLeft->LinearDOF = 0;
+        Base_WheelLeft->RotationalDOF = 1;
+        Base_WheelLeft->AngularForceLimit = MaxForce;
+        Base_WheelLeft->AngularVelMax = FVector(3600, 0, 0);
 
-        SuspensionRight_WheelRight->SetRelativeLocation(FVector(0, 20.22, 0));
-        SuspensionRight_WheelRight->SetRelativeRotation(FRotator(0, 90, 0));
-        SuspensionRight_WheelRight->LinearDOF = 0;
-        SuspensionRight_WheelRight->RotationalDOF = 1;
-        SuspensionRight_WheelRight->AngularForceLimit = MaxForce;
-        SuspensionRight_WheelRight->AngularVelMax = FVector(3600, 0, 0);
+        Base_WheelRight->SetRelativeLocation(FVector(0, 20.22, 0));
+        Base_WheelRight->SetRelativeRotation(FRotator(0, 90, 0));
+        Base_WheelRight->LinearDOF = 0;
+        Base_WheelRight->RotationalDOF = 1;
+        Base_WheelRight->AngularForceLimit = MaxForce;
+        Base_WheelRight->AngularVelMax = FVector(3600, 0, 0);
 
-        WheelLeft->SetupAttachment(SuspensionLeft_WheelLeft);
+        WheelLeft->SetupAttachment(Base_WheelLeft);
         WheelLeft->SetRelativeLocation(FVector(0, 0, 0));
         WheelLeft->SetRelativeRotation(FRotator(0, 180, 0));
-        WheelRight->SetupAttachment(SuspensionRight_WheelRight);
+        WheelRight->SetupAttachment(Base_WheelRight);
         WheelRight->SetRelativeLocation(FVector(0, 0, 0));
         WheelRight->SetRelativeRotation(FRotator(0, -180, 0));
-
-        SuspensionLeftDummy->SetupAttachment(Base_SuspensionLeft);
-        SuspensionRightDummy->SetupAttachment(Base_SuspensionRight);
 
         //Caster
         //Back Left

@@ -75,36 +75,43 @@ bool ATiagoArmKinematic::SetupConstraintsAndPhysics()
 
     TorsoLift_Arm1->SetRelativeLocation(FVector(15.505, -1.4, -15.1));
     TorsoLift_Arm1->SetRelativeRotation(FRotator(90, 0, 0));
+    TorsoLift_Arm1->InitialOrientation = FRotator(0, 0, FMath::RadiansToDegrees(InitialRotArm1JointInRad));
     TorsoLift_Arm1->LinearDOF = 0;
     TorsoLift_Arm1->RotationalDOF = 1;
 
     Arm1_Arm2->SetRelativeLocation(FVector(12.5, -1.95, -3.1));
-    Arm1_Arm2->SetRelativeRotation(FRotator(0,-90,0));
+    Arm1_Arm2->SetRelativeRotation(FRotator(0,90,-90));
+    Arm1_Arm2->InitialOrientation = FRotator(0, 0, FMath::RadiansToDegrees(InitialRotArm2JointInRad));
     Arm1_Arm2->LinearDOF = 0;
     Arm1_Arm2->RotationalDOF = 1;
 
     Arm2_Arm3->SetRelativeLocation(FVector(8.9, 0, -0.15));
-    Arm2_Arm3->SetRelativeRotation(FRotator(0,0,0));
+    Arm2_Arm3->SetRelativeRotation(FRotator(0,180,180));
+    Arm2_Arm3->InitialOrientation = FRotator(0, 0, FMath::RadiansToDegrees(InitialRotArm3JointInRad));
     Arm2_Arm3->LinearDOF = 0;
     Arm2_Arm3->RotationalDOF = 1;
 
     Arm3_Arm4->SetRelativeLocation(FVector(-2, 2.7, -22.2));
-    Arm3_Arm4->SetRelativeRotation(FRotator(0,90,0));
+    Arm3_Arm4->SetRelativeRotation(FRotator(0,-90,90));
+    Arm3_Arm4->InitialOrientation = FRotator(0, 0, FMath::RadiansToDegrees(InitialRotArm4JointInRad));
     Arm3_Arm4->LinearDOF = 0;
     Arm3_Arm4->RotationalDOF = 1;
 
     Arm4_Arm5->SetRelativeLocation(FVector(-16.2, -2, 2.7));
-    Arm4_Arm5->SetRelativeRotation(FRotator(0,180,180));
+    Arm4_Arm5->SetRelativeRotation(FRotator(0,180,270));
+    Arm4_Arm5->InitialOrientation = FRotator(0, 0, FMath::RadiansToDegrees(InitialRotArm5JointInRad));
     Arm4_Arm5->LinearDOF = 0;
     Arm4_Arm5->RotationalDOF = 1;
 
     Arm5_Arm6->SetRelativeLocation(FVector(0, 0, 15));
-    Arm5_Arm6->SetRelativeRotation(FRotator(0,90,0));
+    Arm5_Arm6->SetRelativeRotation(FRotator(0,-90,-270));
+    Arm5_Arm6->InitialOrientation = FRotator(0, 0, FMath::RadiansToDegrees(InitialRotArm6JointInRad));
     Arm5_Arm6->LinearDOF = 0;
     Arm5_Arm6->RotationalDOF = 1;
 
     Arm6_Arm7->SetRelativeLocation(FVector(1,0,0));
     Arm6_Arm7->SetRelativeRotation(FRotator(0,0,-90));
+    Arm6_Arm7->InitialOrientation = FRotator(0, 0, FMath::RadiansToDegrees(InitialRotArm7JointInRad));
     Arm6_Arm7->LinearDOF = 0;
     Arm6_Arm7->RotationalDOF = 1;
 
@@ -114,15 +121,15 @@ bool ATiagoArmKinematic::SetupConstraintsAndPhysics()
 
     Arm2->SetupAttachment(Arm1_Arm2);
     Arm2->SetRelativeLocation(FVector(0,0,0));
-    Arm2->SetRelativeRotation(FRotator(-90,0,180));
+    Arm2->SetRelativeRotation(FRotator(90,-120,60));
 
     Arm3->SetupAttachment(Arm2_Arm3);
     Arm3->SetRelativeLocation(FVector(0,0,0));
-    Arm3->SetRelativeRotation(FRotator(180,90,90));
+    Arm3->SetRelativeRotation(FRotator(0,-90,90));
 
     Arm4->SetupAttachment(Arm3_Arm4);
     Arm4->SetRelativeLocation(FVector(0,0,0));
-    Arm4->SetRelativeRotation(FRotator(0,-90,-90));
+    Arm4->SetRelativeRotation(FRotator(0,-90,90));
 
     Arm5->SetupAttachment(Arm4_Arm5);
     Arm5->SetRelativeLocation(FVector(0,0,0));
@@ -130,7 +137,7 @@ bool ATiagoArmKinematic::SetupConstraintsAndPhysics()
 
     Arm6->SetupAttachment(Arm5_Arm6);
     Arm6->SetRelativeLocation(FVector(0,0,0));
-    Arm6->SetRelativeRotation(FRotator(0,-90,90));
+    Arm6->SetRelativeRotation(FRotator(0,-90,-270));
 
     Arm7Dummy->SetupAttachment(Arm6_Arm7);
     Arm7Dummy->SetRelativeLocation(FVector(0,0,0));

@@ -64,6 +64,27 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URRKinematicJointComponent* Arm6_Arm7 = nullptr;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float InitialRotArm1JointInRad = 0.2;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float InitialRotArm2JointInRad = -1.34;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float InitialRotArm3JointInRad = -0.2;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float InitialRotArm4JointInRad = 1.94;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float InitialRotArm5JointInRad = -1.57;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float InitialRotArm6JointInRad = 1.37;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float InitialRotArm7JointInRad = 0.0;
+
     virtual bool SetupBody() override;
 
     virtual bool SetupConstraintsAndPhysics() override;

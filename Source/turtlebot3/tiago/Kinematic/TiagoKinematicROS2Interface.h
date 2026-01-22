@@ -22,9 +22,9 @@ protected:
     {
         bPublishOdom = true;
         bPublishOdomTf = true;
-        bPublishJointTf = true;
+        bPublishJointTf = false; //Use only if robot state publisher isnt used - idk why you should do that
         JointTfPublicationFrequencyHz = 50;
-        OdomPublicationFrequencyHz = 90;
+        OdomPublicationFrequencyHz = 50;
         bUseActorNameAsNamespace = false;
     };
 };

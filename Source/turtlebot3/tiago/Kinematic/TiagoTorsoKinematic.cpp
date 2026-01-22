@@ -52,9 +52,10 @@ bool ATiagoTorsoKinematic::SetupConstraintsAndPhysics()
         AddJoint(TEXT("torso_lift_link"), TEXT("head_1_link"), TEXT("head_1_joint"), TorsoLift_HeadBase);
         AddJoint(TEXT("head_1_link"), TEXT("head_2_link"), TEXT("head_2_joint"), HeadBase_HeadTop);
 
-        Base_TorsoLift->SetRelativeLocation(FVector(-6.2, 0, 88.85));
-        Base_TorsoLift->SetRelativeRotation(FRotator(-90,0,180));
+        Base_TorsoLift->SetRelativeLocation(FVector(-6.2, 0, 79));
+        Base_TorsoLift->SetRelativeRotation(FRotator(90,180,0));
         Base_TorsoLift->PositionMin = FVector(0,-1000,-1000);
+        Base_TorsoLift->InitialPosition = FVector(InitialPosTorsoLiftInMeters * 100, 0, 0);
         Base_TorsoLift->LinearDOF = 1;
         Base_TorsoLift->RotationalDOF = 0;
 
@@ -70,7 +71,7 @@ bool ATiagoTorsoKinematic::SetupConstraintsAndPhysics()
 
         TorsoLiftWithArm->SetupAttachment(Base_TorsoLift);
         TorsoLiftWithArm->SetRelativeLocation(FVector(0,0,0));
-        TorsoLiftWithArm->SetRelativeRotation(FRotator(-90, 0, 180));
+        TorsoLiftWithArm->SetRelativeRotation(FRotator(90, 180, 0));
 
         HeadBase->SetupAttachment(TorsoLift_HeadBase);
         HeadBase->SetRelativeLocation(FVector(0,0,0));

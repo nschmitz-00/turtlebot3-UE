@@ -44,6 +44,9 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     URRKinematicJointComponent* HeadBase_HeadTop = nullptr;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float InitialPosTorsoLiftInMeters = 0.15;
+
     virtual bool SetupBody() override;
 
     virtual bool SetupConstraintsAndPhysics() override;
