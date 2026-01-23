@@ -3,7 +3,7 @@
 
 //rclUE
 #include "HeadMountedDisplayTypes.h"
-#include "Msgs/ROS2Pose.h"
+#include "Msgs/ROS2PoseStamped.h"
 #include "ROS2Publisher.h"
 
 #include "ROS2PlayerPosePublisherNode.generated.h"

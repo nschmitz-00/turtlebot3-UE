@@ -1,9 +1,11 @@
 #include "ROS2PlayerPosePublisherNode.h"
 
 #include "EngineUtils.h"
+#include "Core/RRConversionUtils.h"
 
 DEFINE_LOG_CATEGORY(PlayerPoseNode);
 
+//TODO: Add vr pawn to simstate so its state can be retrieved via existing /GetEntityState service & remove this node
 UROS2PlayerPosePublisherNode::UROS2PlayerPosePublisherNode()
 {
     Node = CreateDefaultSubobject<UROS2NodeComponent>(TEXT("ROS2NodeComponent"));
@@ -25,7 +27,7 @@ void UROS2PlayerPosePublisherNode::BeginPlay()
                                         this,
                                         TopicName,
                                         UROS2Publisher::StaticClass(),
-                                        UROS2PoseMsg::StaticClass(),
+                                        UROS2PoseStampedMsg::StaticClass(),
                                         PublicationFrequencyHz,
                                         &UROS2PlayerPosePublisherNode::UpdateMessage,
                                         UROS2QoS::Default,
@@ -35,13 +37,17 @@ void UROS2PlayerPosePublisherNode::BeginPlay()
 
 void UROS2PlayerPosePublisherNode::UpdateMessage(UROS2GenericMsg* InMessage)
 {
-    FROSPose Msg;
+    FROSPoseStamped Msg;
     FVector PlayerLocation = ParentActor->GetActorLocation();
     PlayerLocation = PlayerLocation / 100;
+    // Unreal uses left-handed Coordinate Systems, so we need to flip the y-axis
+    PlayerLocation[1] = PlayerLocation[1] * -1.0; 
     FRotator PlayerOrientation = ParentActor->GetActorRotation();
-    Msg.Position = PlayerLocation;
-    Msg.Orientation = PlayerOrientation.Quaternion();
-    CastChecked<UROS2PoseMsg>(InMessage)->SetMsg(Msg);
+    Msg.Header.FrameId = "map";
+    Msg.Header.Stamp = URRConversionUtils::FloatToROSStamp(UGameplayStatics::GetTimeSeconds(GetWorld()));
+    Msg.Pose.Position = PlayerLocation;
+    Msg.Pose.Orientation = PlayerOrientation.Quaternion();
+    CastChecked<UROS2PoseStampedMsg>(InMessage)->SetMsg(Msg);
 }
 
 
