@@ -4,3 +4,6 @@
 [submodule "Plugins/RapyutaSimulationPlugins"]
 	path = Plugins/RapyutaSimulationPlugins
 	url = https://github.com/rapyuta-robotics/RapyutaSimulationPlugins.git
+[submodule "Plugins/RuntimeAudioImporter"]
+	path = Plugins/RuntimeAudioImporter
+	url = git@gitlab.ub.uni-bielefeld.de:cosy-at-home/RuntimeAudioImporter.git
