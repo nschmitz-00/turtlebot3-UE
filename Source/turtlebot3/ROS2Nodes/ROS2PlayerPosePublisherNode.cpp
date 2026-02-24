@@ -38,16 +38,25 @@ void UROS2PlayerPosePublisherNode::BeginPlay()
 void UROS2PlayerPosePublisherNode::UpdateMessage(UROS2GenericMsg* InMessage)
 {
     FROSPoseStamped Msg;
-    FVector PlayerLocation = ParentActor->GetActorLocation();
-    PlayerLocation = PlayerLocation / 100;
-    // Unreal uses left-handed Coordinate Systems, so we need to flip the y-axis
-    PlayerLocation[1] = PlayerLocation[1] * -1.0; 
-    FRotator PlayerOrientation = ParentActor->GetActorRotation();
-    Msg.Header.FrameId = "map";
-    Msg.Header.Stamp = URRConversionUtils::FloatToROSStamp(UGameplayStatics::GetTimeSeconds(GetWorld()));
-    Msg.Pose.Position = PlayerLocation;
-    Msg.Pose.Orientation = PlayerOrientation.Quaternion();
-    CastChecked<UROS2PoseStampedMsg>(InMessage)->SetMsg(Msg);
+    const TSet<UActorComponent*>& Components = ParentActor->GetComponents();
+    for (UActorComponent* Component : Components)
+    {
+        if (UCameraComponent* CameraComp = Cast<UCameraComponent>(Component))
+        {
+            FVector PlayerLocation = CameraComp->GetComponentLocation();
+            PlayerLocation = PlayerLocation / 100;
+            // Unreal uses left-handed Coordinate Systems, so we need to flip the y-axis
+            PlayerLocation[1] = PlayerLocation[1] * -1.0; 
+            FRotator PlayerOrientation = ParentActor->GetActorRotation();
+            Msg.Header.FrameId = "map";
+            Msg.Header.Stamp = URRConversionUtils::FloatToROSStamp(UGameplayStatics::GetTimeSeconds(GetWorld()));
+            Msg.Pose.Position = PlayerLocation;
+            Msg.Pose.Orientation = PlayerOrientation.Quaternion();
+            CastChecked<UROS2PoseStampedMsg>(InMessage)->SetMsg(Msg);
+        }
+    }
+    
+    
 }
 
 

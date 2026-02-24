@@ -37,7 +37,7 @@ void UROS2AudioNode::BeginPlay()
     ROS2_CREATE_SUBSCRIBERW_WITH_QOS(Node, this, SubscriptionTopicName,UROS2AudioDataMsg::StaticClass(), &UROS2AudioNode::MsgCallback, UROS2QoS::Custom);
 
     StreamSoundWave = UStreamingSoundWave::CreateStreamingSoundWave();
-    StreamSoundWave->PreAllocateAudioData(131072, FOnPreAllocateAudioDataResultNative::CreateWeakLambda(this, [](bool bSucceeded){}));
+    StreamSoundWave->PreAllocateAudioData(262144, FOnPreAllocateAudioDataResultNative::CreateWeakLambda(this, [](bool bSucceeded){}));
     StreamSoundWave->SetInitialDesiredSampleRate(RawSampleRate);
     StreamSoundWave->SetInitialDesiredNumOfChannels(RawNumChannels);
 
